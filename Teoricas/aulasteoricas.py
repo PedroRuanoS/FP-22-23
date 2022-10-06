@@ -81,13 +81,13 @@ def soma_elementos_for_range(v1,v2):
     return res
 
 print(soma_elementos_for_range((2,4),(3,6)))
-'''
 
 def tabelas():
     for x in range(1,11):
         for y in range(1,11):
             print(x, 'x', )
 
+'''
 
 def simbolos_comum(s1,s2):
     res = ''
