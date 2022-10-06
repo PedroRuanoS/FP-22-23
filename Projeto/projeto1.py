@@ -22,7 +22,7 @@ beyond imagination. '''
 #print(limpa_texto(test))
 
 def corta_texto(st: str, i: int) -> str:
-    """"""
+    """o creme das bolas é cremoso"""
     n = st.split()
     res1 = [] 
     res2 = n
