@@ -29,9 +29,9 @@ def corta_texto(st: str, i: int) -> str:
 
     for p in n:
         if len(p)<i:
-            res1.append(p)
+            res1.append(p)              #append: adiciona um item à lista {res1}               
             i -= len(p)
-            res2.remove(p)
+            res2.remove(p)              #remove: remove um item da lista {res2}
         else: 
             break
     
