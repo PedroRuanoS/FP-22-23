@@ -51,7 +51,7 @@ def insere_espacos(car, num):
             j = -1
             for e in range(i):
                 j += k
-                n.insert(j, '*')
+                n.insert(j, ' ')
                 t -= 1
                 if t == 0:
                     break
