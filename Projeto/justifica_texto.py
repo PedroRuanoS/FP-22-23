@@ -16,7 +16,8 @@ beyond imagination. '''
 def corta_texto(st: str, i: int) -> tuple:
     """Esta função recebe uma cadeia de carateres {st} e um inteiro positivo {i} correspondentes
     a um texto limpo e uma largura de coluna respetivamente, e devolve duas subcadeias
-    de carateres limpas {res1 e res2}"""                 
+    de carateres limpas {res e resto} em que {res} é a subcadeia com a quantidade de caracteres igual
+    à largura fornecida e {resto} é a subdeia que contém o resto do texto de entrada"""                 
    
     n = st.split()                      #split: transfoma uma cadeia de caracteres {st} uma lista {n}
     res = [] 
@@ -25,7 +26,7 @@ def corta_texto(st: str, i: int) -> tuple:
     for p in n:
         if len(p)<i:
             res.append(p)              #append: adiciona um item à lista {res1}               
-            i -= len(p)
+            i -= len(p)                 
             resto.remove(p)              #remove: remove um item da lista {res2}
         else: 
             break
@@ -58,6 +59,6 @@ def insere_espacos(car, num):
             
     return ''.join(n)
 
-print(insere_espacos('Fundamentos da Programacao!!!', 30))
+#print(insere_espacos('Fundamentos da Programacao!!!', 30))
 
 
