@@ -305,7 +305,10 @@ print(res)
 
 #                                                                 CAPÍTULO 3
 
+import timeit
+
 #1 
+
 
 def cinco(arg):
     return arg == 5
@@ -362,7 +365,7 @@ def dias_mes(ini, ano):
 
 #7 
  
-#a 
+#   a) 
 
 def valor(q,j,n):
     if j>1 or j<0 or not isinstance(q, (int,float)) or not isinstance(j, (int,float)) or not isinstance(n, (int,float)):
@@ -372,24 +375,135 @@ def valor(q,j,n):
 
 #print(valor(100,0.03,4))
 
-#b 
+#   b) 
 
-def duplicar(q,j):
-    n = 0
-    while valor(q,j,0) != 2*q:
-        n += 1
-    return n
+def duplicar(h,i):
+    m = 1
+    while valor(h,i,m) < 2*h:
+        m += 1
+    return m
 
-print(duplicar(100, 0.03))
+#print(duplicar(100, 0.03))
 
+#8
 
+def serie_geom(r):
+    pass
 
+#                                                                              CAPÍTULO 4
 
+'''
+#1
 
+soma = 0
+for i in range(20,0,-2):
+    soma += 1
 
+print(soma)
 
+'''
+#2
 
+def explode(num):
+    if  not isinstance(num, int):
+        raise ValueError('explode: argumento não inteiro')
+    elif num < 0:
+        raise ValueError('explode: argumento inteiro não positivo')
+    else:
+        res_tuplo = ()
+        while num > 0:
+            digito = num%10
+            res_tuplo = (digito,) + res_tuplo
+            num //= 10
+    return res_tuplo
 
+#print(explode(34500))
+
+#3
+
+def implode(t):
+    if not isinstance(t, tuple):
+        raise ValueError('implode: argumento não é um tuplo')
+    res = 0
+    for i in t:
+        if not isinstance(i, int):
+            raise ValueError('implode: elemento não inteiro')
+        if i >= 10 or i < 0:
+            raise ValueError('implode: elemento não é um algarismo')
+        res = res*10 + i
+
+    return res
+
+#print(implode((3,4,0,0,4)))
+
+#4
+
+def filtra_pares(num):
+    if not isinstance(t, tuple):
+        raise ValueError('filtra_pares: argumento não é um tuplo')
+    res = ()
+    for i in num:
+        if not isinstance(i, int):
+            raise ValueError('filtra_pares: elemento não inteiro')
+        if i >= 10 or i < 0:
+            raise ValueError('filtra_pares: elemento não é um algarismo')
+        if i % 2 == 0:
+            res += (i,)
+            
+    return res
+
+#print(filtra_pares((2,5,6,7,9,1,8,8)))
+
+#5
+
+def algarismos_pares(num):
+    return implode(filtra_pares(explode(num)))
+
+#print(algarismos_pares(6643399766641))
+
+#6
+
+def num_para_seq_cid(num):
+    if type(num) != int:
+        raise ValueError('num_para_seq_cid: argumento não inteiro')
+    if num < 0:
+        raise ValueError('num_para_seq_cid: argumento inferior a 0')
+    res = ()
+    while num > 0:
+        digito = num%10
+        if digito%2 == 0:
+            digito += 2
+            if digito == 10:
+                digito = 0
+        else: 
+            digito -= 2
+            if digito == -1:
+                digito = 9
+        res = (digito,) + res
+        num //= 10
+    return res
+
+#print(num_para_seq_cid(1234567890))
+
+#7
+
+def amigas(x,y):
+    pass
+
+#8
+
+def junta_ordenados(x1,x2):
+    i1 = 0
+    i2 = 0
+    res = ()
+    while i1 < len(x1) or i2 < len(x2):
+        if x1[i1] > x2[i2]: 
+            res += x2[i2]
+            i2 += 1
+        elif x1[i1] <= x2[i2]:
+            res += x1[i1]
+            i1 += 1 
+        elif   
 
 
 
