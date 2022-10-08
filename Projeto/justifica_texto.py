@@ -42,7 +42,7 @@ def insere_espacos(car: str, num: int) -> str:
     k = 1   
 
     for c in n:
-        t -= len(c)         #{t}: caracteres vazios a adicionar para {n} ficar com a quantidade de caracteres desejada {num}                  
+        t -= len(c)         #{t}: caracteres vazios necessários de adicionar para {n} ficar com a quantidade de caracteres desejada {num}                  
     if len(n) == 1:
         for d in range(t):
             n.append(' ')
@@ -75,6 +75,19 @@ def justifica_texto(texto, numero):
         for i in o:
             rest.remove(i)
         resto = ' '.join(rest)
-    
+
+    t = numero - len(resto)
+    print(t)
+    if t%2 == 0:
+        for j in range(int(t/2)):
+            rest.append('*')
+            resto = ' '.join(rest)
+    else: 
+        for j in range(int((t+1)/2)):
+            rest.append('*')
+            resto = (' '.join(rest))[:-1]
+            
+    res.append(resto)
     return res  
 
+print(justifica_texto(test1, 59))
