@@ -26,7 +26,7 @@ def corta_texto(st: str, i: int) -> tuple:
     for p in n:
         if len(p)<i:
             res.append(p)              #append: adiciona um item à lista {res1}               
-            i -= len(p)                 
+            i -= len(p) + 1                
             resto.remove(p)              #remove: remove um item da lista {res2}
         else: 
             break
@@ -35,7 +35,7 @@ def corta_texto(st: str, i: int) -> tuple:
 
 #print(corta_texto('Computers are incredibly fast, accurate and stupid. Human beings are incredibly slow inaccurate, and brilliant. Together they are powerful beyond imagination.', 60))
 
-def insere_espacos(car, num):
+def insere_espacos(car: str, num: int) -> str:
     n = car.split()
     i = len(n) - 1
     t = num 
@@ -61,4 +61,20 @@ def insere_espacos(car, num):
 
 #print(insere_espacos('Fundamentos da Programacao!!!', 30))
 
+def justifica_texto(texto, numero):
+    text = limpa_texto(texto)
+    resto = text
+    res = []
+    rest = resto.split()
+
+    while len(resto) > numero:
+        n = corta_texto(resto, numero)[0]
+        o = n.split()
+        m = insere_espacos(n, numero)
+        res.append(m)
+        for i in o:
+            rest.remove(i)
+        resto = ' '.join(rest)
+    
+    return res  
 
