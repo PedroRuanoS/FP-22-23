@@ -17,7 +17,7 @@ def corta_texto(st: str, i: int) -> tuple:
     resto = st.split()                   
     
     for p in n:
-        if len(p)<i:
+        if len(p)<=i:
             res.append(p)              #append: adiciona um item à lista {res1}               
             i -= len(p) + 1                
             resto.remove(p)              #remove: remove um item da lista {res2}
@@ -56,16 +56,17 @@ def insere_espacos(car: str, num: int) -> str:
 
 def justifica_texto(texto: str, numero: int) -> tuple:
     if not isinstance(numero, int) or not isinstance(texto, str) or len(texto) == 0:
-        raise ValueError('justifica texto: argumentos invalidos')
+        raise ValueError('justifica_texto: argumentos invalidos')
     erro = texto.split()
     for i in erro:
         if len(i)>numero:
-            raise ValueError('justifica texto: argumentos invalidos')
+            raise ValueError('justifica_texto: argumentos invalidos')
 
     text = limpa_texto(texto)
     resto = text
     res = []
     rest = resto.split()
+
     while len(resto) > numero:
         n = corta_texto(resto, numero)[0]
         o = n.split()
@@ -76,7 +77,6 @@ def justifica_texto(texto: str, numero: int) -> tuple:
         resto = ' '.join(rest)
 
     t = numero - len(resto)
-    print(t)
     if t%2 == 0:
         for j in range(int(t/2)):
             rest.append(' ')
@@ -89,5 +89,5 @@ def justifica_texto(texto: str, numero: int) -> tuple:
     res.append(resto)
     return tuple(res)  
 
-#print(justifica_texto(test1, 60))
+#print(justifica_texto(cad, 6))
 
