@@ -114,3 +114,8 @@ def justifica_texto(texto, numero):
     
 
 print(justifica_texto(cu, 60))
+
+test1 = '''   Computers are incredibly \n\tfast, \n\t\taccurate
+ \n\t\t\tand stupid. \n Human beings are incredibly slow 
+inaccurate, and brilliant. \n Together they are powerful 
+beyond imagination. '''
