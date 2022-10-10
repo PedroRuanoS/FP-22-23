@@ -1,15 +1,8 @@
-
 def limpa_texto(s: str) -> str:
     """Esta função recebe uma cadeia de carateres {s} qualquer e devolve
     a cadeia de carateres limpa {res} que corresponde à remoção de carateres 
     brancos.""" 
     return ' '.join(s.split())        #split: transforma uma cadeia de caracteres numa lista, ignorando caracteres vazios e os caracteres \t,\n,\v,\f,\r; join: transforma uma lista numa cadeia de caractreres, separando os elementos da lista por ' '.  
-
-
-test1 = '''   Computers are incredibly \n\tfast, \n\t\taccurate
- \n\t\t\tand stupid. \n Human beings are incredibly slow 
-inaccurate, and brilliant. \n Together they are powerful 
-beyond imagination. '''
 
 #print(limpa_texto(test1))
 
@@ -31,7 +24,7 @@ def corta_texto(st: str, i: int) -> tuple:
         else: 
             break
 
-    return ' '.join(res), ' '.join(resto)
+    return (' '.join(res), ' '.join(resto))   #...
 
 #print(corta_texto('Computers are incredibly fast, accurate and stupid. Human beings are incredibly slow inaccurate, and brilliant. Together they are powerful beyond imagination.', 60))
 
@@ -61,12 +54,18 @@ def insere_espacos(car: str, num: int) -> str:
 
 #print(insere_espacos('Fundamentos da Programacao!!!', 30))
 
-def justifica_texto(texto, numero):
+def justifica_texto(texto: str, numero: int) -> tuple:
+    if not isinstance(numero, int) or not isinstance(texto, str) or len(texto) == 0:
+        raise ValueError('justifica texto: argumentos invalidos')
+    erro = texto.split()
+    for i in erro:
+        if len(i)>numero:
+            raise ValueError('justifica texto: argumentos invalidos')
+
     text = limpa_texto(texto)
     resto = text
     res = []
     rest = resto.split()
-
     while len(resto) > numero:
         n = corta_texto(resto, numero)[0]
         o = n.split()
@@ -80,14 +79,15 @@ def justifica_texto(texto, numero):
     print(t)
     if t%2 == 0:
         for j in range(int(t/2)):
-            rest.append('*')
+            rest.append(' ')
             resto = ' '.join(rest)
     else: 
         for j in range(int((t+1)/2)):
-            rest.append('*')
+            rest.append(' ')
             resto = (' '.join(rest))[:-1]
             
     res.append(resto)
-    return res  
+    return tuple(res)  
 
-print(justifica_texto(test1, 59))
+#print(justifica_texto(test1, 60))
+

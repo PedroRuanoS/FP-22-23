@@ -305,9 +305,9 @@ print(res)
 
 #                                                                 CAPÍTULO 3
 
-import timeit
 
 #1 
+
 
 
 def cinco(arg):
@@ -387,10 +387,62 @@ def duplicar(h,i):
 
 #8
 
-def serie_geom(r):
-    pass
 
-#                                                                              CAPÍTULO 4
+def serie_geom(r,n):
+    if  not isinstance(r, (int)) or not isinstance(n, (int)) or n<0:
+        raise ValueError('serie_geom: argumento incorrecto')
+    i = 0
+    soma = 0
+    while i <= n:
+        soma += r**i
+        i += 1
+    return soma
+
+#print(serie_geom(2,4))
+
+#9
+
+from math import floor
+from multiprocessing.sharedctypes import Value
+
+def dia_da_semana(dia, mes, ano):
+    if mes < 3:
+        m = mes + 12
+        ano -= 1
+    else: 
+        m = mes
+    k = ano%100
+    j = ano//100
+    q = dia
+    h = (q +13*(m+1)//5 + k + k//4 + j//4 - 2*j)%7
+    t = ('Sábado', 'Domingo', 'Segunda', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira')
+
+    return t[h]
+
+#print(dia_da_semana(18, 1, 2014))
+
+#10
+
+def misterio(n):
+    ni = inverte(n)
+    ns = abs(n-ni)
+    nsi = inverte(ns)
+    if ns + nsi != 1089:
+        return 'Condições não verificadas'
+    else:
+        return ns + nsi
+
+def inverte(y):
+    res = 0
+    while y>0:
+        dig = y%10
+        res = res*10 + dig
+        y //= 10
+    return res     
+
+#print(misterio(131))
+
+#                                                                             CAPÍTULO 4
 
 '''
 #1
@@ -491,19 +543,74 @@ def amigas(x,y):
     pass
 
 #8
-
-def junta_ordenados(x1,x2):
-    i1 = 0
-    i2 = 0
+def junta_ordenados(x,y):
+    xi = 0
+    yi = 0
     res = ()
-    while i1 < len(x1) or i2 < len(x2):
-        if x1[i1] > x2[i2]: 
-            res += x2[i2]
-            i2 += 1
-        elif x1[i1] <= x2[i2]:
-            res += x1[i1]
-            i1 += 1 
-        elif   
+    while xi < len(x) or yi < len(y):
+        if xi == len(x):
+            res += (y[yi],)
+            yi += 1
+        elif xi == len(y):
+            res += (x[xi],)
+            xi += 1
+        elif x[xi] > y[yi]:
+            res += (y[yi],)
+            yi += 1
+        elif x[xi] <= y[yi]:
+            res += (x[xi],)
+            xi += 1
+    return res
+
+#print(junta_ordenados((2, 34, 200, 210),(1, 23)))
+
+#9
+
+def reconhece(frase):
+    for i in range(len(frase)):
+        if i > 0:
+            if frase[i-1] in '1234' and frase[i] in 'ABCD':
+                return False
+        elif frase[i] != 'A' and frase[i] != 'B' and frase[i] != 'C' and frase[i] != 'D' and frase[i] != '1' and frase[i] != '2' and frase[i] != '3' and frase[i] != '4':  
+            return False
+    return True
+
+#print(reconhece('A1'))
+#print(reconhece('ABBBBCDDDD23311'))
+#print(reconhece('ABC12C'))
+
+#10
+#a)
+
+def codifica(cad):
+    res = ''
+    res2 = ''
+    for i in range(len(cad)):
+        if i%2 != 0:
+            res += cad[i]
+        if i%2 == 0:
+            res2 += cad[i]
+    return res2 + res
+
+#print(codifica('abcde'))
+
+#b)
+
+def descodifica(cad):
+    if len(cad)%2 == 0:
+        mei = int(len(cad)/2)
+    else:
+        mei = int((len(cad)+1)/2)
+    res = ''
+    for i in range(mei):
+        res += cad[i]
+        if (i+mei)<len(cad):
+            res += cad[i+mei]                  
+    return res
+
+print(descodifica('acebd'))
+
+#6
 
 
 
@@ -515,15 +622,48 @@ def junta_ordenados(x1,x2):
 
 
 
+#                           TESTE TICHA 
 
+#3. (Já podes usar Tuplos) defense uma função que recebe um tuplo, com números inteiros ou floats e pelo menos dois números, e que entre cada par de números escreve os sinais <, > ou =.
+#Ex: t = (1, 3, 2, 2, 9)
+#(1, <, 3, >, 2, =, 2, <, 9)
 
+def comparacao(x):
+    if len(x) < 2:
+        raise ValueError('erro')
+    for i in x:
+        if not isinstance(i, (int, float)):
+            raise ValueError('erro')
+    i = 0
+    res = ()
+    while i < len(x):
+        if i == 0:
+            pass
+        elif x[i-1]>x[i]:
+            res += ('>',)
+        elif x[i-1]<x[i]:
+            res += ('<',)           
+        else:
+            res += ('=',)
+        res += (x[i],)
+        i += 1
+    return res   
 
+#print(comparacao((1,3,2,2,9)))
 
+#2. Definir uma função que recebe um número e um dígito e que devolve o número escrito mas só com os algarismos q são múltiplos do digito. (Só podes usar matéria do capítulo das funções)
+#Ex: 234567 e 8
+#24
 
+def divisor(x,y):
+    res = 0
+    i = 0
+    while x>0:
+        digito = x%10
+        if y%digito == 0:
+            res = res + digito*10**i
+            i += 1
+        x //= 10
+    return res
 
-
-
-
-
-
-
+#print(divisor(23456,8))
