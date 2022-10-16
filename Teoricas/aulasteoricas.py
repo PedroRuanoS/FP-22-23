@@ -225,3 +225,4 @@ def simbolos_comum_for(s1,s2):
 
 
 
+

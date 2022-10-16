@@ -402,9 +402,6 @@ def serie_geom(r,n):
 
 #9
 
-from math import floor
-from multiprocessing.sharedctypes import Value
-
 def dia_da_semana(dia, mes, ano):
     if mes < 3:
         m = mes + 12
@@ -668,3 +665,74 @@ def divisor(x,y):
 
 #print(divisor(23456,8))
 
+#                                                               FICHA LISTAS
+
+#1
+
+def lista_codigos(stri):
+    res = []
+    for i in stri:
+        res += [ord(i)]
+    return res
+
+#print(lista_codigos('bom dia'))
+
+#2
+
+def remove_multiplos(lst, inte):
+    res = []
+    for i in lst:
+        if i%inte != 0:
+            res += [i]
+    return res
+
+#print(remove_multiplos([2,3,5,9,12,33,34,45], 3)) 
+
+#3
+
+def soma_cumulativa(lst):
+    for i in range(1,len(lst)):
+        lst[i] += lst[i-1]
+    return lst
+
+#print(soma_cumulativa([1,2,3,4,5]))
+
+#4
+
+def elemento_matriz(mat, lin, col):
+    if type(mat) != list:
+        raise ValueError('não é lista')
+    for i in mat:
+        if type(i) != list:
+            raise ValueError('não é lista')
+    if lin > (len(mat) - 1):
+        raise ValueError('indice invalido, linha', lin)
+    if col > (len(mat[lin]) - 1):
+        raise ValueError('indice invalido, linha', lin) 
+    return mat[lin][col]
+
+#m= [[1,2,3],[4,5,6]]
+#print(elemento_matriz(m,0,0))
+
+#5
+
+def rep_matriz(mat):
+    for i in mat:
+        for j in i:
+            res = ''
+            res += j + '\t'
+        print(res)
+
+#6
+
+def soma_matrizes(mat1,mat2):
+    for i in range(len(mat1)):
+        res = ''
+        for j in range(len(mat1[i])):
+            res += mat1[i][j] + mat2[i][j]
+    print(res)     
+
+m1 = [[1,2,3],[4,5,6],[7,8,9]]
+m2 = [[1,2,3],[4,5,6],[7,8,9]]
+print(soma_matrizes(m1,m2))
+    

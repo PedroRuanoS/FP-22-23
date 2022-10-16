@@ -109,11 +109,12 @@ def justifica_texto(texto, numero):
         for i in o:
             rest.remove(i)
         resto = ' '.join(rest)
+#NOT COMPLETE
 
     return res   
-    
 
-print(justifica_texto(cu, 60))
+
+print(justifica_texto(test1, 60))
 
 test1 = '''   Computers are incredibly \n\tfast, \n\t\taccurate
  \n\t\t\tand stupid. \n Human beings are incredibly slow 
