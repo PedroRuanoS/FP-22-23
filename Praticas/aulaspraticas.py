@@ -605,7 +605,7 @@ def descodifica(cad):
             res += cad[i+mei]                  
     return res
 
-print(descodifica('acebd'))
+#print(descodifica('acebd'))
 
 #6
 
@@ -726,13 +726,26 @@ def rep_matriz(mat):
 #6
 
 def soma_matrizes(mat1,mat2):
+    if len(mat1) != len(mat2):
+        raise ValueError("matrices not the same size")
+    for rowI in range(len(mat1)):
+        if len(mat1[rowI]) != len(mat2[rowI]):
+            raise ValueError("matrices not the same size")
+    res2 = ''
     for i in range(len(mat1)):
         res = ''
         for j in range(len(mat1[i])):
-            res += mat1[i][j] + mat2[i][j]
-    print(res)     
+            res = res + str(mat1[i][j] + mat2[i][j]) + '  '
+        res2 += res + '\n'
+    return res2
 
 m1 = [[1,2,3],[4,5,6],[7,8,9]]
 m2 = [[1,2,3],[4,5,6],[7,8,9]]
-print(soma_matrizes(m1,m2))
-    
+#print(soma_matrizes(m1,m2))
+
+def multiplica_mat(mat1,mat2):
+    res = ''
+    for i in range(mat1):
+        for j in range(mat2):
+
+             
