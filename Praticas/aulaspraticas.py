@@ -890,4 +890,27 @@ def euromilhoes():
         res += [int((random()*12)) + 1]
     return res
 
-print(euromilhoes()) 
+#print(euromilhoes()) 
+
+#           TESTE TICHA
+
+def texto(text, letter):
+    res1 = ''
+    res2 = ''
+    for i in text:
+        if i not in letter:
+            res1 += i
+        else:
+            res2 += i
+    return res2 + res1
+
+#print(texto('no desenvolvimento', 'n'))
+
+def troca_zeros(lista):
+  for i in range(len(lista)):
+    if lista[i] == 0 and i > 0:
+      lista[i], lista[i - 1] = lista[i - 1], lista[i]
+  return lista
+
+baba = [1, 0, 'ola', 4, 'peidingo']
+print(troca_zeros(baba))
