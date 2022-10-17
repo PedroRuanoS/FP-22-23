@@ -669,7 +669,7 @@ def divisor(x,y):
 
 #1
 
-def lista_codigos(stri):
+#def lista_codigos(stri):
     res = []
     for i in stri:
         res += [ord(i)]
@@ -679,7 +679,7 @@ def lista_codigos(stri):
 
 #2
 
-def remove_multiplos(lst, inte):
+#def remove_multiplos(lst, inte):
     res = []
     for i in lst:
         if i%inte != 0:
@@ -690,7 +690,7 @@ def remove_multiplos(lst, inte):
 
 #3
 
-def soma_cumulativa(lst):
+#def soma_cumulativa(lst):
     for i in range(1,len(lst)):
         lst[i] += lst[i-1]
     return lst
@@ -699,7 +699,7 @@ def soma_cumulativa(lst):
 
 #4
 
-def elemento_matriz(mat, lin, col):
+#def elemento_matriz(mat, lin, col):
     if type(mat) != list:
         raise ValueError('não é lista')
     for i in mat:
@@ -716,7 +716,7 @@ def elemento_matriz(mat, lin, col):
 
 #5
 
-def rep_matriz(mat):
+#def rep_matriz(mat):
     for i in mat:
         for j in i:
             res = ''
@@ -725,7 +725,7 @@ def rep_matriz(mat):
 
 #6
 
-def soma_matrizes(mat1,mat2):
+#def soma_matrizes(mat1,mat2):
     if len(mat1) != len(mat2):
         raise ValueError("matrices not the same size")
     for rowI in range(len(mat1)):
@@ -747,5 +747,147 @@ def multiplica_mat(mat1,mat2):
     res = ''
     for i in range(mat1):
         for j in range(mat2):
+            pass
 
-             
+#1
+
+def lista_codigos(cad):
+    res = [] 
+    for i in cad:
+        res += [ord(i)]
+    return res
+
+#print(lista_codigos('bom dia'))
+
+#2
+
+def remove_multiplos(list, num):
+    res = []
+    for i in list:
+        if i%num != 0:
+            res += [i]
+    return res        
+
+#print(remove_multiplos([2, 3, 5, 9, 12, 33, 34, 45], 3))
+
+#3
+
+def soma_comulativa(list):
+    res = []
+    soma = 0
+    for i in list:
+        soma += i
+        res += [soma]
+    return res
+
+#print(soma_comulativa([1,2,3,4,5]))~
+
+#4
+
+def elemento_matriz(mat, ind1, ind2):
+    if type(mat) != list:
+        raise ValueError('não é lista')
+    for i in mat:
+        if type(i) != list:
+            raise ValueError('não é lista')
+    if ind1 > (len(mat)-1):  
+        raise ValueError('indice invalido: linha', ind1)
+    if ind2 > (len(mat[ind1])-1):
+        raise ValueError('indice invalido: coluna', ind2)
+    return mat[ind1][ind2]
+
+#print(elemento_matriz([[1, 2, 3], [4, 5, 6]], 0, 0))
+#print(elemento_matriz([[1, 2, 3], [4, 5, 6]], 0, 3))
+
+#5
+
+def escreve_matriz(mat):
+    res2 = ''
+    for i in mat:
+        res = ''
+        for j in i:
+            res += str(j) + '  '
+        res2 += res + '\n'
+    return res2
+
+#print(escreve_matriz([[1,2,3],[3,2,1],[4,5,3]]))    
+
+#6
+
+def soma_mat(mat1,mat2):
+    res2 = ''
+    for i in range(len(mat1)):
+        res = ''
+        for j in range(len(mat1[i])):
+            res += str(mat1[i][j]+ mat2[i][j]) + '  '
+        res2 += res + '\n'
+    return res2        
+
+#m1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+#m2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+#print(soma_mat(m1,m2))
+
+#7
+
+def multiplicar_mat(mat1,mat2):
+    res = []
+    for i in range(len(mat2[0])):
+        linha = []
+        for j in range(len(mat1)):
+            mult = 0
+            for k in range(len(mat2)):
+                mult += (mat1[i][k]*mat2[k][j])
+            linha += [mult]
+        res += [linha]
+    res += []
+    
+    return res  
+
+#m1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+#m2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+#print(multiplicar_mat(m1,m2))
+
+#8
+
+def seq_racaman(num):
+    res = []
+    for n in range(num):
+        if n == 0:
+            res += [0]
+        elif res[n-1] > n and res[n-1] - n not in res:
+            res += [res[n-1] - n]
+        else:
+            res += [res[n-1] + n]
+    return res
+
+#print(seq_racaman(15))
+
+#9
+
+def num_occ_lista(lista, num):
+    counter = 0
+    coudjom = lista
+    for i in coudjom:
+        if num == i:
+            counter += 1
+        if type(i) == list:
+            for j in i:
+                coudjom += [j]
+    return counter
+
+#print(num_occ_lista([1, 2, 3, 4, 3], 3))
+#print(num_occ_lista([1, [[[1]], 2], [[[2]]], 2], 2))
+
+#10
+
+from random import *
+
+def euromilhoes():
+    res = []
+    for i in range(5):
+        res += [int((random()*50)) + 1]
+    for i in range(2):
+        res += [int((random()*12)) + 1]
+    return res
+
+print(euromilhoes()) 
