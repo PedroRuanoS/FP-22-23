@@ -114,9 +114,38 @@ def justifica_texto(texto, numero):
     return res   
 
 
-print(justifica_texto(test1, 60))
+#print(justifica_texto(test1, 60))
 
 test1 = '''   Computers are incredibly \n\tfast, \n\t\taccurate
  \n\t\t\tand stupid. \n Human beings are incredibly slow 
 inaccurate, and brilliant. \n Together they are powerful 
 beyond imagination. '''
+
+def retira_zeros_diagonal(m, c):
+    list_m = list(m)
+    list_c = list(c)
+    
+    for i in range(len(m)):
+        if list_m[i][i] == 0:
+            for j in range(len(m)):
+                if list_m[i][j] != 0 and list_m[j][i] != 0 and i != j:
+                    k = list_m[i]
+                    l = list_m[j]
+                    o = list_c[i]
+                    n = list_c[j]
+                    list_m.pop(j)
+                    list_m.insert(j, k)
+                    list_m.pop(i)
+                    list_m.insert(i, l)
+                    list_c.pop(j)
+                    list_c.insert(j, o)
+                    list_c.pop(i)
+                    list_c.insert(i, n)
+                    break
+        
+    return (tuple(list_m), tuple(list_c)) 
+
+a2, c2 = ((0, 1, 1), (1, 0, 0), (0, 1, 0)), (1, 2, 3, 4)
+a3 = ((1, 0, 0), (0, 1, 0), (0, 1, 1))
+matrix = ((0, 1, 1, 1), (1, 0, 1, 1), (1, 1, 0, 1), (1, 1, 1, 0))
+print(retira_zeros_diagonal(matrix, c2))
