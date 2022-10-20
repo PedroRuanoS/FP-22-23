@@ -58,8 +58,8 @@ def justifica_texto(texto: str, numero: int) -> tuple:
     if not isinstance(numero, int) or not isinstance(texto, str) or len(texto) == 0:
         raise ValueError('justifica_texto: argumentos invalidos')
     erro = texto.split()
-    for i in erro:
-        if len(i)>numero:
+    for palavra in erro:
+        if len(palavra)>numero:
             raise ValueError('justifica_texto: argumentos invalidos')
 
     text = limpa_texto(texto)

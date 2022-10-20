@@ -904,13 +904,45 @@ def texto(text, letter):
             res2 += i
     return res2 + res1
 
-#print(texto('no desenvolvimento', 'n'))
+# CAPITULO 6
 
-def troca_zeros(lista):
-  for i in range(len(lista)):
-    if lista[i] == 0 and i > 0:
-      lista[i], lista[i - 1] = lista[i - 1], lista[i]
-  return lista
+#1
 
-baba = [1, 0, 'ola', 4, 'peidingo']
-print(troca_zeros(baba))
+#a: 2º dicionário
+#b: dentro 2º dicionário, é o dicionario associado à chave 'nome'
+#c: 'Doe'
+#d: 'D'
+
+#2
+
+def agrupa_por_chave(lst1):
+    res = {}
+    for i in lst1:
+        chave = i[0]
+        valor = i[1]
+        if chave in res:
+            res[chave].append(valor)
+        else:
+            res[chave] = [valor]
+    return res
+
+#3
+#a
+
+def baralho():
+    res = []
+    naipes = ('esp','copas','ouros','paus')
+    valores = ('A','2','3','4','5','6','7','8','9','10','J','Q','K')
+    for np in naipes:
+        for vlr in valores:
+            carta = {}
+            carta['np'] = np 
+            carta['vlr'] = vlr
+            res.append(carta)
+    return res
+
+#print(baralho())
+#b
+
+def baralha():
+    pass
