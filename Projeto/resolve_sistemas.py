@@ -84,6 +84,8 @@ def resolve_sistema(mat: tuple, cons: tuple, precisao: float) -> tuple:
 
 #a4, c4 = ((2, -1, -1), (2, -9, 7), (-2, 5, -9)), (-8, 8, -6)
 #print(resolve_sistema(a4, c4, 1e-20))
-
+a4, c4 = ((2, -1, -1), (2, -9, 7), (-2, 5, -9)), (-8, 8, -6)
+a5, c5 = ((4, -1, 1), (2, -8, 1), (1, 0, -3)), (2, 4, 1)
+print(resolve_sistema(a5, c5, 1e-20))
 
 
