@@ -340,8 +340,8 @@ def area_coroa(r1,r2):
 
 #5
 
-def bissexto(num):
-    return (num%4 == 0 and num%100 != 0) or (num%400 == 0)
+#def bissexto(num):
+#    return (num%4 == 0 and num%100 != 0) or (num%400 == 0)
 
 #print(bissexto(1984))
 #print(bissexto(1985))
@@ -946,3 +946,100 @@ def baralho():
 
 def baralha():
     pass
+
+# CAPITULO 7
+
+#a
+
+#{'numerador': n, 'denominador': d}
+
+#b
+
+def cria_rac(n,d):
+    if type(n) == int and type(d) == int:
+        if d > 0:
+            return {'numerador': n, 'denominador': d}
+    raise ValueError('')
+
+def num(r):
+    return r['numerador']
+
+def den(r):
+    return r['denominador']
+
+def eh_racional(arg):
+    if type(arg) == dict:
+        if len(arg) == 2:
+            if('numerador' in arg and 'denominador' in arg):
+                if type(arg['numerador']) == int and type(arg['denominador']) == int:
+                    if arg['denominador'] > 0:
+                        return True
+    return False
+
+def eh_racional_zero(r):
+    return r['numerador'] == 0
+
+def rac_iguais(r1, r2):
+    return r1['numerador'] * r2['denominador'] == r2['numerador'] * r1['denominador']
+
+#c
+
+def escreve_rac(r):
+    print(str(r['numerador'])+ '/' + str(r['denominador']))
+
+#d
+
+def produto_rac(r1, r2):
+        return cria_rac(num(r1)*num(r2), den(r1)*den(r2))
+            
+#3
+
+#a
+
+#{'dia': d, 'mes': m, 'ano': a}
+
+#b
+
+def cria_data(d,m,a):
+    if type(d) == int and type(m) == int and type(a) == int:
+        if d > 0 and m > 0:
+            if 12 >= m >= 0:
+                if dias_de(m,a) >= d >= 1:
+                    return True
+    raise ValueError('')
+
+def dias_de(m,a):
+    if m in [1, 3, 5, 7, 8, 10, 12]:
+        return 31
+    elif m in [4, 6, 9, 11]:
+        return 30
+    elif m == 2 and bissexto(a):
+        return 29
+    elif m == 2 and not bissexto(a):
+        return 28
+
+def bissexto(a):
+    return a%4 == 0 and a%100 != 0  or a%400 == 0
+
+def dia(dt):
+    return dt['dia']
+
+def mes(dt):
+    return dt['mes']
+
+def ano(dt):
+    return dt['ano']
+
+def eh_data(arg):
+    if type(arg) == dict:
+        if len(arg) == 3:
+            if 'dia' in arg and 'mes' in arg and 'ano' in arg:
+                if type(arg['dia']) == int and type(arg['mes']) == int and type(arg['ano']) == int:
+                    if  12 >= arg['mes'] >= 1:
+                        if dias_de(arg['mes'],arg['ano']) >= arg['dias'] >= 1:
+                            return True
+    return False
+
+def mesma_data(d1, d2):
+    return d1['dia'] == d2['dia'] and d1['mes'] == d2['mes'] and d1['ano'] == d2['ano']:
+    

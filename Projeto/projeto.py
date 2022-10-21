@@ -142,9 +142,9 @@ def eh_diagonal_dominante(matriz: tuple) -> bool:
 
 
 def resolve_sistema(mat: tuple, cons: tuple, precisao: float) -> tuple:
-    if not isinstance(mat, tuple) or not isinstance(cons, tuple) or not isinstance(precisao, (int, float)):
+    if not isinstance(mat, tuple) or not isinstance(cons, tuple) or not isinstance(precisao, float) or not 0 < precisao < 1:
         raise ValueError('resolve_sistema: argumentos invalidos')
-    if len(mat) == 0:
+    if len(mat) == 0 or len(cons) == 0:
         raise ValueError('resolve_sistema: argumentos invalidos')
     for num in cons:
         if not isinstance(num, (int, float)):
@@ -161,10 +161,17 @@ def resolve_sistema(mat: tuple, cons: tuple, precisao: float) -> tuple:
     matriz, constante = retira_zeros_diagonal(mat, cons)
     if not eh_diagonal_dominante(matriz):
         raise ValueError('resolve_sistema: matriz nao diagonal dominante')
-    x = [0,0,0]
-    while not verifica_convergencia(matriz, constante, x, precisao):
-        for i in range(len(x)):
-            x[i] = x[i] + (constante[i] - produto_interno(matriz[i], x))/matriz[i][i]  
     
-    return tuple(x)
-
+    x1 = []
+    x2 = []
+    for k in range(len(matriz)):
+            x1 += [0]
+            x2 += [0]
+    
+    while not verifica_convergencia(matriz, constante, x2, precisao):  
+        for j in range(len(x2)):
+            x1[j] = x2[j]
+        for i in range(len(x2)):
+            x2[i] = x1[i] + (constante[i] - produto_interno(matriz[i], x1))/matriz[i][i]  
+    
+    return tuple(x2)
