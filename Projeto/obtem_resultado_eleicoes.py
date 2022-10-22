@@ -19,13 +19,26 @@ def atribui_mandatos(partidos: dict, num: int) -> list:
         for partido in dic:
             lis1 += [dic[partido][0]]
             lis2 += [partido]
-        if #se houverem dois elementos iguais na lis1 !!!!!!!!!!!!!!!!!!
+        max_i = lis1.index(max(lis1))
 
+        maior = max(lis1)
+        maiores = []
+        for k in range(len(lis1)):
+            if lis1[k] == maior:
+                maiores += [lis2[k]]
+    
+        if len(maiores) > 1:
+            menor = maiores[0]
+            for partido in maiores:
+                if partidos[partido] < partidos[menor]:
+                    menor = partido 
+            res += [menor]
+            #se houverem dois elementos iguais na lis1 !!!!!!!!!!!!!!!!!!
         else:
-            i = lis1.index(max(lis1))
-            res += [lis2[i]]
-            dic[lis2[i]].pop(0)
+            res += [lis2[max_i]]
+            dic[lis2[max_i]].pop(0)
         
     return res
 
 print(atribui_mandatos({'A':12000, 'B':7500, 'C':5250, 'D':3000}, 7))
+
