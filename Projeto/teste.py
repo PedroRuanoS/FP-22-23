@@ -151,4 +151,8 @@ a2, c2 = ((0, 1, 1), (1, 0, 0), (0, 1, 0)), (1, 2, 3)
 a3 = ((1, 0, 0), (0, 1, 0), (0, 1, 1))
 matrix = ((0, 1, 1, 1), (1, 0, 1, 1), (1, 1, 0, 1), (1, 1, 1, 0))
 #print(retira_zeros_diagonal(matrix, c2))
-print(retira_zeros_diagonal(a2,c2))
+#print(retira_zeros_diagonal(a2,c2))
+
+listinha = [1,2,3,455,78,9,4,3]
+listinha.remove(455)
+print(listinha)

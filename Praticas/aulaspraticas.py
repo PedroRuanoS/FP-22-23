@@ -949,6 +949,8 @@ def baralha():
 
 # CAPITULO 7
 
+#1
+
 #a
 
 #{'numerador': n, 'denominador': d}
@@ -976,7 +978,7 @@ def eh_racional(arg):
                         return True
     return False
 
-def eh_racional_zero(r):
+def eh_rac_zero(r):
     return r['numerador'] == 0
 
 def rac_iguais(r1, r2):
@@ -985,7 +987,7 @@ def rac_iguais(r1, r2):
 #c
 
 def escreve_rac(r):
-    print(str(r['numerador'])+ '/' + str(r['denominador']))
+    print(str(r['numerador']) + '/' + str(r['denominador']))
 
 #d
 
@@ -1041,5 +1043,5 @@ def eh_data(arg):
     return False
 
 def mesma_data(d1, d2):
-    return d1['dia'] == d2['dia'] and d1['mes'] == d2['mes'] and d1['ano'] == d2['ano']:
+    return d1['dia'] == d2['dia'] and d1['mes'] == d2['mes'] and d1['ano'] == d2['ano']
     

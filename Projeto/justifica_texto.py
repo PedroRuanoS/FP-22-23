@@ -26,7 +26,7 @@ def corta_texto(st: str, i: int) -> tuple:
 
     return (' '.join(res), ' '.join(resto))   #...
 
-#print(corta_texto('Computers are incredibly fast, accurate and stupid. Human beings are incredibly slow inaccurate, and brilliant. Together they are powerful beyond imagination.', 60))
+print(corta_texto('Computers are incredibly fast, accurate and stupid. Human beings are incredibly slow inaccurate, and brilliant. Together they are powerful beyond imagination.', 60))
 
 def insere_espacos(car: str, num: int) -> str:
     n = car.split()
