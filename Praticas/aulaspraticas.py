@@ -1001,7 +1001,7 @@ def produto_rac(r1, r2):
 #{'dia': d, 'mes': m, 'ano': a}
 
 #b
-
+'''
 def cria_data(d,m,a):
     if type(d) == int and type(m) == int and type(a) == int:
         if d > 0 and m > 0:
@@ -1044,4 +1044,107 @@ def eh_data(arg):
 
 def mesma_data(d1, d2):
     return d1['dia'] == d2['dia'] and d1['mes'] == d2['mes'] and d1['ano'] == d2['ano']
+    
+'''
+
+#3
+
+#a {'dia': d, 'mês': m, 'ano': a}
+
+#b
+
+def cria_data(d,m,a):
+    return {'dia': d, 'mes': m, 'ano': a}
+
+def dia(dt):
+    return dt['dia']
+
+def mes(dt):
+    return dt['mes']
+
+def ano(dt):
+    return dt['ano']
+
+def bissexto(a):
+    return a%4 == 0 and (a%100 != 0 or a%400 == 0)
+        
+def dias_do_mes(m,a):
+    if m in [1, 3, 5, 7, 8, 10, 12]:
+        return 31
+    if m in [4,6,9,11]:
+        return 30
+    if m in 2:
+        if bissexto(a):
+            return 29
+        else:
+            return 28
+
+def eh_data(arg):
+    if type(arg) == dict:
+        if len(arg) == 3:
+            if 'dia' in arg and 'mes' in arg and 'ano' in arg:
+                if type(arg['dia']) == int and type(arg['mes']) == int and type(arg['ano']) == int:
+                    if  12 >= arg['mes'] >= 1 and dias_de(arg['mes'], arg['ano']) >= arg['dia']:
+                        return True
+
+def mesma_data(d1,d2):
+    return d1['dia'] == d2['dia'] and d1['mes'] == d2['mes'] and d1['ano'] == d2['ano']
+
+def escreve_data(data):
+    if data['dia'] < 10:
+        data['dia'] = '0' + str(data['dia'])
+    if data['ano'] < 0:
+        data['ano'] = str(abs(data['ano'])) + ' ' + 'AC'
+    return str(data['dia']) + '/' + str(data['mes']) + '/' + str(data['ano'])
+
+#print(escreve_data(cria_data(5, 9, 2018)))
+#print(escreve_data (cria_data (5, 9, -10)))
+
+def data_anterior(d1,d2):
+    return ano(d1) < ano(d2) or ano(d1) == ano(d2) and mes(d1) < mes(d2) or ano(d1) == ano(d2) and mes(d1) == mes(d2) and dia(d1) < dia(d2)  
+
+def idade(d1,d2):
+    if ano(d1) > ano(d2):
+        raise ValueError('idade: a pessoa ainda não nasceu')
+    idade = ano(d2) - ano(d1)
+    if mes(d1) < mes(d2) or (mes(d1) == mes(d2) and dia(d1) < dia(d2)):
+        idade += 1
+    return idade
+
+#2
+
+#a {w}
+
+# CU
+
+def resumo_FP(notas):
+    negativas = 0
+    total = 0
+    soma = 0
+    for nota in notas:
+        if nota < 10:
+            negativas += len(notas[nota])
+        else:
+            soma += nota*len(notas[nota])
+            total += len(notas[nota])
+    return soma/total, negativas
+
+#print(resumo_FP({1 : [46592, 49212, 90300, 59312], 15 : [52592, 59212], 20 : [58323]}))
+
+def mais_antigo(bib):
+    antigo = bib[0]['ano']
+    livro_antigo = bib[0]['titulo']
+    for livro in bib:
+        if livro['ano'] < antigo:
+            antigo = livro['ano']
+            livro_antigo = livro['titulo']
+    return livro_antigo
+
+#print(mais_antigo([{'autores': ['G. Arroz', 'J. Monteiro', 'A. Oliveira'],
+'titulo': 'Arquitectura de computadores', 'editor': 'IST Press',
+'cidade': 'Lisboa', 'ano': 2007, 'numpags': 799,
+'isbn': '978-972-8469-54-2'}, {'autores': ['J.P. Martins'],
+'titulo': 'Logica e Raciocinio', 'editor': 'College Publications',
+'cidade': 'Londres', 'ano': 2014, 'numpags': 438,
+'isbn': '978-1-84890-125-4'}]))
     

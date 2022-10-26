@@ -19,8 +19,7 @@ def atribui_mandatos(partidos: dict, num: int) -> list:
         for partido in dic:
             lis1 += [dic[partido][0]]
             lis2 += [partido]
-        print(lis1)
-        print(lis2)
+
         maior = max(lis1)
         maiores = []
         for k in range(len(lis1)):
@@ -52,13 +51,6 @@ def obtem_partidos(territorios: dict) -> list:
     
     return sorted(partidos)
 
-#info = {
-#'Endor': {'deputados': 7,
-#'votos': {'A':12000, 'B':7500, 'C':5250, 'D':3000}},
-#'Hoth': {'deputados': 6,
-#'votos': {'B':11500, 'A':9000, 'E':5000, 'D':1500}},
-#'Tatooine': {'deputados': 3,
-#'votos': {'A':3000, 'B':1900}}}
 
 #print(obtem_partidos(info))
 
@@ -81,9 +73,31 @@ def ordenar(res):
     return res
 
 def obtem_resultado_eleicoes(territorios):
-
+    if not isinstance(territorios, dict):
+        raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+    if len(territorios) < 1:
+        raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+    for terrorio_e in territorios:
+        if not isinstance(territorios[terrorio_e], dict): 
+            raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+        if len(territorios[terrorio_e]) != 2:
+            raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+        if 'deputados' not in territorios[terrorio_e] or 'votos' not in territorios[terrorio_e]:
+            raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+        if not isinstance(territorios[terrorio_e]['deputados'], int) or not isinstance(territorios[terrorio_e]['votos'], dict):
+            raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+        if territorios[terrorio_e]['deputados'] < 1 or len(territorios[terrorio_e]['votos']) < 1:
+            raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+        votos = 0
+        for partido_e in territorios[terrorio_e]['votos']:
+            if not isinstance(partido_e, str): 
+                raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+            if not isinstance(territorios[terrorio_e]['votos'][partido_e], int) or territorios[terrorio_e]['votos'][partido_e] < 0:
+                raise ValueError('obtem_resultado_eleicoes: argumento invalido')
+            votos += territorios[terrorio_e]['votos'][partido_e]
+        if votos == 0:
+            raise ValueError('obtem_resultado_eleicoes: argumento invalido')
     
-
     partidos = obtem_partidos(territorios)
     soma = {}
     for i in partidos:
@@ -107,3 +121,12 @@ def obtem_resultado_eleicoes(territorios):
     res = ordenar(res)
     return res
 
+info = {
+'Endor': {'deputados': 7,
+'votos': {'A':12000, 'B':7500, 'C':5250, 'D':3000}},
+'Hoth': {'deputados': 6,
+'votos': {'B':11500, 'A':9000, 'E':5000, 'D':1500}},
+'Tatooine': {'deputados': 3,
+'votos': {'A':3000, 'B':1900}}}
+
+print(obtem_resultado_eleicoes(info))
