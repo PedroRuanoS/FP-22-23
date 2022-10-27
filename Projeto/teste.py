@@ -155,4 +155,15 @@ matrix = ((0, 1, 1, 1), (1, 0, 1, 1), (1, 1, 0, 1), (1, 1, 1, 0))
 
 listinha = [1,2,3,455,78,9,4,3]
 listinha.remove(455)
-print(listinha)
+#print(listinha)
+
+def ordenar(res):
+    for i in range(len(res)-1):
+        for j in range(len(res)-i-1):
+            if res[j][1] < res[j+1][1]:
+                res[j], res[j+1] = res[j+1], res[j]
+            elif res[j][1] == res[j+1][1]:
+                if res[j][2] < res[j+1][2]:
+                    res[j], res[j+1] = res[j+1], res[j]
+  
+    return res

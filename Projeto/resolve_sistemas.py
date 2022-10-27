@@ -7,11 +7,9 @@ def produto_interno(tup1: tuple, tup2: tuple) -> float:
 #print(produto_interno((1,2,3,4,5),(-4,5,-6,7,-8)))
 
 def verifica_convergencia(matriz: tuple, constante: tuple, x: tuple, precisao: tuple) -> bool:
-    i = 0
-    for t in matriz:
-        if abs(produto_interno(t, x) - constante[i]) > precisao:
+    for t in range(len(matriz)):
+        if abs(produto_interno(matriz[t], x) - constante[t]) > precisao:
             return False
-        i += 1
     return True
 
 #a1, c1 = ((1, -0.5), (-1, 2)), (-0.4, 1.9)
