@@ -109,7 +109,20 @@ def simbolos_comum_for(s1,s2):
 
 #print(simbolos_comum_for('olaa','adeus'))
 
+lis = (1, 2, (3, 4, 5, 6), 4)
+print(lis + (1,2,3))
 
+def alisa(t):
+    i = 0
+    while i < len(t):
+        if isinstance(t[i], tuple):
+            t = t[:i] + t[i] + t[i+1:]
+        else:
+            i = i + 1
+    return t
+
+a = (2, 4, (8, (9, (7, ), 3, 4), 7), 6, (5, (7, (8, ))))
+#print(alisa(a))
 
 
 

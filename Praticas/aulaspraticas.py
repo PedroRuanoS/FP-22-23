@@ -1141,10 +1141,277 @@ def mais_antigo(bib):
     return livro_antigo
 
 #print(mais_antigo([{'autores': ['G. Arroz', 'J. Monteiro', 'A. Oliveira'],
-'titulo': 'Arquitectura de computadores', 'editor': 'IST Press',
-'cidade': 'Lisboa', 'ano': 2007, 'numpags': 799,
-'isbn': '978-972-8469-54-2'}, {'autores': ['J.P. Martins'],
-'titulo': 'Logica e Raciocinio', 'editor': 'College Publications',
-'cidade': 'Londres', 'ano': 2014, 'numpags': 438,
-'isbn': '978-1-84890-125-4'}]))
+#'titulo': 'Arquitectura de computadores', 'editor': 'IST Press',
+#'cidade': 'Lisboa', 'ano': 2007, 'numpags': 799,
+#'isbn': '978-972-8469-54-2'}, {'autores': ['J.P. Martins'],
+#'titulo': 'Logica e Raciocinio', 'editor': 'College Publications',
+#'cidade': 'Londres', 'ano': 2014, 'numpags': 438,
+#'isbn': '978-1-84890-125-4'}]))
+
+#       CAPUTILO 6
+
+#1
+
+def apenas_digitos_impares(num):
+    digito = num%10
+    if num == 0:
+        return 0
+    elif digito%2 == 0:
+        return apenas_digitos_impares(num//10)
+    else:
+        return apenas_digitos_impares(num//10) * 10 + digito
+
+def junta_ordenadas(l1,l2):
+    if len(l1) == 0 or len(l2) == 0:
+        return l1 + l2
+    if l1[0] < l2[0]:
+        return [l1[0]] + junta_ordenadas(l1[1:], l2)
+    else:
+        return [l2[0]] + junta_ordenadas(l1, l2[1:])
+
+#print(junta_ordenadas([2, 5, 90], [3, 5, 6, 12]))
+
+def sublistas(l):
+    if len(l) == 0:
+        return 0
+    if isinstance(l[0], list):
+        return 1 + sublistas(l[0] + l[1:])
+    else:
+        return sublistas(l[1:])
+
+#print(sublistas([[1], 2, [3]]))
+
+def soma_n_vezes(a,b,n):
+    if a == 0 or n == 0:
+        return b
+    else:
+        return b + a + soma_n_vezes(a,0,n-1)
+
+def soma_els_atomicos(tup):
+    if len(tup) == 0:
+        return 0
+    if isinstance(tup[0], tuple):
+        return soma_els_atomicos(tup[0] + tup[1:])
+    else:
+        return tup[0] + soma_els_atomicos(tup[1:])
+
+#print(soma_els_atomicos((3, ((((((6, (7, ))), ), ), ), ), 2, 1)))
+
+def inverte(lista):
+    if len(lista) == 0:
+        return []
+    else:
+        return [lista[-1]] + inverte(lista[:-1])
+
+#print(inverte([3, 4, 7, 9]))
+
+def pertence(lis, num):
+    if len(lis) == 0:
+        return False
+    elif lis[0] == num:
+        return True
+    else:
+        return pertence(lis[1:], num)
+
+#print(pertence([3, 4, 5], 2))
+#print(pertence([3, 4, 5], 5))
+
+def subtrai(l1, l2):
+    if len(l1) == 0:
+        return []
+    if l1[0] in l2:
+            return subtrai(l1[1:], l2)
+    else:
+        return [l1[0]] + subtrai(l1[1:], l2)
     
+#print(subtrai([4,5,2,3], [2, 3]))
+#print(subtrai([2, 3, 4, 5], [6, 7]))
+
+def parte(lista, num):
+    def parte_a(men, mai, lista, num):
+        if len(lista) == 0:
+            return [men, mai]
+        if lista[0] < num:
+            return parte_a(men + [lista[0]], mai, lista[1:], num)
+        else:
+            return parte_a(men, mai + [lista[0]], lista[1:], num)
+    
+    return parte_a([],[], lista, num)
+
+#print(parte([3, 5, 1, 4, 5, 8, 9], 4))
+
+def maior(lista):
+    def maior_a(mai, lista):
+        if len(lista) == 0:
+            return mai
+        if lista[0] > mai:
+            return maior_a(lista[0], lista[1:])
+        else:
+            return maior_a(mai, lista[1:])
+    
+    return maior_a(lista[0], lista)
+
+#print(maior([5, 3, 8, 1, 9, 2]))
+
+#     CAPITULO 7
+
+#1
+#a
+#x*n + x*(n-1) + ... + x*0
+#b
+#2*3 + 2*2 + 2*1 + 0
+#c
+#op adiadas
+#d
+def misterio(x,n):
+    def misterio_aux(x,n,res):
+        if n == 0:
+            return res
+        else:
+            return misterio_aux(x, n-1, x*n + res)
+    return misterio_aux(x,n,0)
+
+#print(misterio(2,3))
+
+#2
+#a
+def quadrado_a(n):
+    if n == 1:
+        return 1
+    else:
+        return n + n - 1 + quadrado_a(n-1)
+
+#b
+def quadrado_b(n):
+    def quadrado_aux(n,res):
+        if n < 1:
+            return res
+        else:
+            return quadrado_aux(n-1, n+n-1 + res)
+    return quadrado_aux(n,0)
+
+#c
+def quadrado_c(n):
+    soma = 0
+    while n > 0:
+        soma+= n + n - 1
+        n -= 1
+    return soma
+
+#print(quadrado_a(3))
+#print(quadrado_b(3))
+#print(quadrado_c(3))
+
+#3
+#a
+def numero_digitos_a(n):
+    if n == 0:
+        return 0
+    else:
+        return 1 + numero_digitos_a(n//10)
+
+#b
+def numero_digitos_b(n):
+    def numero_digitos_aux(n,res):
+        if n == 0:
+            return res
+        else:
+            return numero_digitos_aux(n//10, 1 + res)
+    return numero_digitos_aux(n, 0)
+
+#c
+def numero_digitos_c(n):
+    counter = 0
+    while n != 0:
+        counter += 1
+        n //= 10
+    return counter
+
+#print(numero_digitos_a(1012))
+#print(numero_digitos_b(1012))
+#print(numero_digitos_c(1012))
+
+#4
+
+def eh_capicua(n):
+    def digito(n, i):
+        return (n//(10**(numero_digitos_a(n)-i)))%10
+        
+    def eh_capicua_aux(n,i,ulti):
+        if i == numero_digitos_a(n)//2:
+            return True
+        elif digito(n,i) == digito(n, ulti):
+            return eh_capicua_aux(n, i+1, ulti-1)
+        else:
+            return False
+
+    return eh_capicua_aux(n,1,numero_digitos_a(n))
+
+#print(eh_capicua(12321))
+#print(eh_capicua(1221))
+#print(eh_capicua(123210))
+
+#5
+
+def espelho(n):
+    def espelho_aux(n,res):
+        if n == 0:
+            return res
+        else:
+            return espelho_aux(n//10, res*10 + n%10)
+    return espelho_aux(n,0)
+
+#print(espelho(391))
+#print(espelho(45679))
+
+#6
+#a
+def funcao_g(n):
+    if n == 0:
+        return 0
+    else:
+        return n - funcao_g(funcao_g(n-1))
+
+#print(funcao_g(3))
+
+#7
+def calc_soma(x,n):
+    pass
+
+#8
+def maior_inteiro(n):
+    def maior_inteiro_aux(n, i, res):
+        if res > n:
+            return i-1
+        else:
+            return maior_inteiro_aux(n, i+1, res+i+1)
+    return maior_inteiro_aux(n, 0, 0)
+
+#print(maior_inteiro(6))
+#print(maior_inteiro(20))
+
+#       CAPITULO 6.2 (FUNCIONAIS)
+
+#4
+#a
+def filtra(fun, lst):
+    if not lst:
+        return lst
+    if fun(lst[0]):
+        return [lst[0]] + filtra(fun, lst[1:])
+    else:
+        return filtra(fun, lst[1:])
+
+#b
+def transforma(fun,lst):
+    if not lst:
+        return lst
+    else:
+        return [fun(list[0])] + transforma(fun, list[1:])
+
+#c
+
+#5
+def soma_quadrados_impares():
+    return 
+
