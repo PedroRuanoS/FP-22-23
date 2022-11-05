@@ -31,7 +31,8 @@ def atualiza_estado(g):
 def eh_gerador(arg):
     if isinstance(arg, dict) and len(arg) == 2:
         if 'bits' in arg and 'seed' in arg:
-            if (copia_gerador(arg)['bits'] == 32 or copia_gerador(arg)['bits'] == 64) and isinstance(obtem_estado(arg), int) and copia_gerador(arg)['bits'] > obtem_estado(arg) >= 0:
+            if (copia_gerador(arg)['bits'] == 32 or copia_gerador(arg)['bits'] == 64) and isinstance(obtem_estado(arg), int) and \
+                copia_gerador(arg)['bits'] > obtem_estado(arg) >= 0:
                 return True
     return False
 
@@ -95,5 +96,37 @@ c2 = cria_coordenada('N', 20)
 #print(string_para_coordenada('A04'))
 #print(string_para_coordenada('E23'))
 
-        
+def obtem_coordenadas_vizinhas(c):
+    if obtem_coluna(c) == 'A':
+        if obtem_linha(c) == 1: #3
+            return (cria_coordenada('B', 1), cria_coordenada('B', 2), cria_coordenada('A', 2))
+        elif obtem_linha(c) == 99: #3
+            return (cria_coordenada('A', 98), cria_coordenada('B', 98), cria_coordenada('B', 99))
+        else: #5
+            return (cria_coordenada('A', obtem_linha(c)-1), cria_coordenada('B', obtem_linha(c)-1), cria_coordenada('B', obtem_linha(c)), 
+            cria_coordenada('B', obtem_linha(c)+1), cria_coordenada('A', obtem_linha(c)+1)) 
+    elif obtem_coluna(c) == 'Z':
+        if obtem_linha(c) == 1: #3
+            return (cria_coordenada('Z', 2), cria_coordenada('Y', 2), cria_coordenada('Y', 1))
+        elif obtem_linha(c) == 99: #3
+            return (cria_coordenada('Y', 98), cria_coordenada('Z', 98), cria_coordenada('Y', 99))
+        else: #5
+            return (cria_coordenada('Y', obtem_linha(c)-1), cria_coordenada('Z', obtem_linha(c)-1),
+            cria_coordenada('Z', obtem_linha(c)+1), cria_coordenada('Y', obtem_linha(c)+1), cria_coordenada('Y', obtem_linha(c))) 
+    elif obtem_linha(c) == 1: #5
+            return (cria_coordenada(chr(ord(obtem_coluna(c))+1), 1), cria_coordenada(chr(ord(obtem_coluna(c))+1), 2),
+            cria_coordenada(obtem_coluna(c), 2), cria_coordenada(chr(ord(obtem_coluna(c))-1), 2), cria_coordenada(chr(ord(obtem_coluna(c))-1), 1))
+    elif obtem_linha(c) == 99: #5 
+            return (cria_coordenada(chr(ord(obtem_coluna(c))-1), 98), cria_coordenada(obtem_coluna(c), 98),
+            cria_coordenada(chr(ord(obtem_coluna(c))+1), 98), cria_coordenada(chr(ord(obtem_coluna(c))+1), 99), cria_coordenada(chr(ord(obtem_coluna(c))-1), 99))
+    else: #8
+            return (cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)-1), cria_coordenada(obtem_coluna(c), obtem_linha(c)-1), cria_coordenada(chr(ord(obtem_coluna(c))+1), obtem_linha(c)-1), 
+            cria_coordenada(chr(ord(obtem_coluna(c))+1), obtem_linha(c)), cria_coordenada(chr(ord(obtem_coluna(c))+1), obtem_linha(c)+1), cria_coordenada(obtem_coluna(c), obtem_linha(c)+1), 
+            cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)+1), cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)))
+            
+def obtem_coordenada_aleatoria():
+    pass
 
+c3 = cria_coordenada('M', 44)
+t = obtem_coordenadas_vizinhas(c3)
+#print(tuple(coordenada_para_str(p) for p in t))
