@@ -1394,24 +1394,141 @@ def maior_inteiro(n):
 
 #4
 #a
-def filtra(fun, lst):
-    if not lst:
-        return lst
+def filtra(fun,lst):
+    if lst == []:
+        return []
     if fun(lst[0]):
-        return [lst[0]] + filtra(fun, lst[1:])
+        return [lst[0]] + filtra(fun,lst[1:])
     else:
-        return filtra(fun, lst[1:])
+        return filtra(fun,lst[1:])
 
 #b
 def transforma(fun,lst):
     if not lst:
-        return lst
+        return []
     else:
-        return [fun(list[0])] + transforma(fun, list[1:])
+        return [fun(lst[0])] + transforma(fun,lst[1:])
+
 
 #c
+def acumula (fn, lst):
+    if lst == []:
+        raise ValueError('acumula: lista vazia')
+    else:
+        res = lst[0]
+        for e in lst[1:]:
+            res = fn(res, e)
+        return res
 
 #5
-def soma_quadrados_impares():
-    return 
+def soma_quadrados_impares(lst):
+    return acumula((lambda x, y : x+y), transforma((lambda x : x ** 2), filtra((lambda x : x % 2 != 0), lst)))
 
+#print(soma_quadrados_impares([1, 2, 3, 4, 5, 6]))
+
+#6
+def eh_primo(n):
+    if n == 1:
+        return False
+    else:
+        for i in range(2, n):
+                if n % i == 0:
+                    return False
+        return True
+    
+def nao_primos(n):
+    return list(filtra(lambda x: not eh_primo(x), list(range(1, n+1))))
+
+#print(nao_primos(10))
+
+#7
+#a 
+def misterio(num, p):
+    if num == 0:
+        return 0
+    elif p(num % 10):
+        return num % 10 + 10 * misterio(num // 10, p)
+    else:
+        return misterio(num // 10, p)
+
+#b
+def filtra_pares(n):
+    return misterio(n, lambda x: x%2 == 0)
+
+#print(filtra_pares(5467829))
+
+#8
+def lista_digitos(n):
+    return list(map(lambda x: int(x), str(n)))
+
+#print(lista_digitos(123))
+
+#9
+from functools import reduce
+
+def produto_digitos(n, pred):
+    return reduce(lambda x,y: x*y, filter(pred, lista_digitos(n)))
+
+#print(produto_digitos(12345, lambda x : x > 3))
+
+#10
+def apenas_digitos_impares(n):
+    return reduce(lambda x,y: x*10+y, filter(lambda x: x%2 != 0, lista_digitos(n)))
+
+#print(apenas_digitos_impares(123456789))
+
+#teste ticha
+
+#2
+#a
+def soma_impares_it(lst):
+    res = 0
+    for i in lst:
+        if i%2 != 0:
+            res += i
+    return res
+
+#print(soma_impares_it([1,2,3,4,5,6,7,8,9]))
+
+#b
+def soma_impares_lin(lst):
+    if lst == []:
+        return []
+    elif lst[0] % 2 != 0:
+        return lst[0] + soma_impares_lin(lst[1:])
+    else:
+        return soma_impares_lin(lst[1:])
+
+#print(soma_impares_it([1,2,3,4,5,6,7,8,9]))
+
+#c
+def soma_impares_cau(lst):
+    def aux(lst, res):
+        if lst == []:
+            return res
+        elif lst[0]%2 != 0:
+            return aux(lst[1:], res + lst[0])
+        else:
+            return aux(lst[1:], res)
+    return aux(lst, 0)
+
+#print(soma_impares_cau([1,2,3,4,5,6,7,8,9]))
+
+#3
+
+#a
+def digitos_impares(n):
+    return len(list(filter(lambda x: int(x)%2 != 0, str(n))))
+
+#print(digitos_impares(123456789))
+
+#b
+def filtra_b(lst, pred):
+    if lst == []:
+        return True
+    elif pred(lst[0]):
+        return False
+    else:
+        return filtra_b(lst[1:],pred)
+
+#print(filtra_b([1,2,3,4,5,6,7,8], lambda x: x>5))
