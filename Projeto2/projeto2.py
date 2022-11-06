@@ -89,13 +89,6 @@ def string_para_coordenada(s):
     else:
         return {'col': s[0], 'lin': int(s[1] + s[2])}
 
-c1 = cria_coordenada('B', 1)
-c2 = cria_coordenada('N', 20)
-#print(coordenadas_iguais(c1, c2))
-#print(coordenada_para_str(c1))
-#print(string_para_coordenada('A04'))
-#print(string_para_coordenada('E23'))
-
 def obtem_coordenadas_vizinhas(c):
     if obtem_coluna(c) == 'A':
         if obtem_linha(c) == 1: #3
@@ -124,9 +117,10 @@ def obtem_coordenadas_vizinhas(c):
             cria_coordenada(chr(ord(obtem_coluna(c))+1), obtem_linha(c)), cria_coordenada(chr(ord(obtem_coluna(c))+1), obtem_linha(c)+1), cria_coordenada(obtem_coluna(c), obtem_linha(c)+1), 
             cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)+1), cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)))
             
-def obtem_coordenada_aleatoria():
-    pass
+def obtem_coordenada_aleatoria(c,g):
+    return cria_coordenada(gera_carater_aleatorio(g, obtem_coluna(c)), gera_numero_aleatorio(g, obtem_linha(c)))
+    
+#TAD parcela
+def cria_parcela():
+    return 
 
-c3 = cria_coordenada('M', 44)
-t = obtem_coordenadas_vizinhas(c3)
-#print(tuple(coordenada_para_str(p) for p in t))

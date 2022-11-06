@@ -1,6 +1,6 @@
 import pytest
 import sys
-from tadgerador import *
+from projeto2 import *
 
 
 class TestPublicGerador:
