@@ -16,3 +16,17 @@ b = {'bits': 3, 'seed': 4}
 #c4 = obtem_coordenada_aleatoria(c3, g1)
 #print(c4)
 #print(coordenada_para_str(c4))
+
+#p1 = cria_parcela()
+#p2 = cria_copia_parcela(p1)
+#print(parcela_para_str(p1))
+#print(parcela_para_str(limpa_parcela(p1))) 
+#print(parcelas_iguais(p1, p2))
+#print(parcela_para_str(esconde_mina(p2)))
+#print(alterna_bandeira(p2))
+#print(parcela_para_str(p2))
+#print(alterna_bandeira(p1))
+#print(eh_parcela_minada(p2))
+
+c = [1,2,3]
+print(tuple(c))
