@@ -31,9 +31,9 @@ def atualiza_estado(g):
 def eh_gerador(arg):
     if isinstance(arg, dict) and len(arg) == 2:
         if 'bits' in arg and 'seed' in arg:
-            if (copia_gerador(arg)['bits'] == 32 or copia_gerador(arg)['bits'] == 64) and isinstance(obtem_estado(arg), int) and \
-                (2**copia_gerador(arg)['bits'])-1 >= obtem_estado(arg) >= 0:
-                return True
+            if copia_gerador(arg)['bits'] == 32 or copia_gerador(arg)['bits'] == 64: 
+                if isinstance(obtem_estado(arg), int) and (2**copia_gerador(arg)['bits'])-1 >= obtem_estado(arg) >= 0:
+                    return True
     return False
 
 def geradores_iguais(g1, g2):
@@ -140,7 +140,7 @@ def desmarca_parcela(p):
     return p
 
 def esconde_mina(p):
-    p['mina']  = True
+    p['mina'] = True
     return p
 
 def eh_parcela(arg):
@@ -221,12 +221,12 @@ def obtem_ultima_linha(m):
 def obtem_parcela(m, c):
     return m[coordenada_para_str(c)]
 
-def obtem_coordenada(m, s):
+def obtem_coordenadas(m, s):
     res = []
     for i in m:
-        if m[i]['estado'] == s:
+        if m[i]['estado'] == s[:-1]:
             res.append(string_para_coordenada(i))
-        elif s == 'minada' and m[i]['mina']:
+        elif s == 'minadas' and m[i]['mina']:
             res.append(string_para_coordenada(i))
     return tuple(res)
 
@@ -288,12 +288,42 @@ def campo_para_str(m):
 
     return string1 + string2 + string3 + string2
 
-m = cria_campo('E',5)
-campo_para_str(m)
-for l in 'ABC':esconde_mina(obtem_parcela(m, cria_coordenada(l,1)))
-for l in 'BC':esconde_mina(obtem_parcela(m, cria_coordenada(l,2)))
-for l in 'DE':limpa_parcela(obtem_parcela(m, cria_coordenada(l,1)))
-for l in 'AD':limpa_parcela(obtem_parcela(m, cria_coordenada(l,2)))
-for l in 'ABCDE':limpa_parcela(obtem_parcela(m, cria_coordenada(l,3)))
-alterna_bandeira(obtem_parcela(m, cria_coordenada('D',4)))
-#print(campo_para_str(m))
+def coloca_minas(m, c, g, n):
+    coord_proib = [coordenada_para_str] 
+    for i in obtem_coordenadas_vizinhas(c):
+        if eh_coordenada_do_campo(m, i):
+            coord_proib.append(coordenada_para_str(i))
+    while n > 0:
+        ulti_c = cria_coordenada(obtem_ultima_coluna(m), obtem_ultima_linha(m))
+        mina_c = obtem_coordenada_aleatoria(ulti_c, g)
+        if coordenada_para_str(mina_c) not in coord_proib:
+            esconde_mina(obtem_parcela(m, mina_c))
+            coord_proib.append(coordenada_para_str(mina_c))
+            n -= 1
+    return m
+
+def limpa_campo(m, c):
+    if not eh_parcela_minada(obtem_parcela(m,c)):
+        limpa_parcela(obtem_parcela(m, c))
+        n_analisadas = []
+        if obtem_numero_minas_vizinhas(m, c) == 0:
+            for i in obtem_coordenadas_vizinhas(c):
+                if eh_coordenada_do_campo(m, i):
+                    limpa_parcela(obtem_parcela(m, i))
+                    n_analisadas.append(i)
+        while len(n_analisadas) > 0:
+            n_analisadas_l = n_analisadas.copy()
+            for j in n_analisadas_l:
+                n_analisadas.remove(j)
+                if obtem_numero_minas_vizinhas(m, j) == 0:
+                    for k in obtem_coordenadas_vizinhas(j):
+                        if eh_coordenada_do_campo(m, k) and not eh_parcela_limpa(obtem_parcela(m, k)):
+                            limpa_parcela(obtem_parcela(m, k))
+                            n_analisadas.append(k)
+        return m
+    else:
+        return m
+
+
+
+
