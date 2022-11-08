@@ -1,3 +1,4 @@
+#2.1.1
 #TAD gerador
 def cria_gerador(b, s):
     if (b != 32 and b != 64) or not isinstance(s, int) or s < 0 or s > (2**b)-1:
@@ -53,6 +54,7 @@ def gera_carater_aleatorio(g,c):
     atualiza_estado(g)
     return chr(65 + (obtem_estado(g) % (ord(c) - ord('A') + 1)))
 
+#2.1.2
 #TAD coordenada
 def cria_coordenada(col, lin):
     if not isinstance(col, str) or not isinstance(lin, int) or len(col) != 1 or not 65 <= ord(col) <= 90 or not 1 <= lin <= 99:
@@ -119,7 +121,8 @@ def obtem_coordenadas_vizinhas(c):
             
 def obtem_coordenada_aleatoria(c,g):
     return cria_coordenada(gera_carater_aleatorio(g, obtem_coluna(c)), gera_numero_aleatorio(g, obtem_linha(c)))
-    
+
+#2.1.3 
 #TAD parcela
 def cria_parcela():
     return {'estado': 'tapada', 'mina': False}
@@ -195,7 +198,8 @@ def alterna_bandeira(p):
         return True
     else:
         return False
-    
+
+#2.1.4    
 #TAD campo
 def cria_campo(c, l):
     if not eh_coordenada(cria_coordenada(c,l)):
@@ -324,6 +328,30 @@ def limpa_campo(m, c):
     else:
         return m
 
+#2.2.1
+def jogo_ganho(m):
+    for i in m:
+        if not eh_parcela_minada(obtem_parcela(m, string_para_coordenada(i))):
+            if eh_parcela_tapada(obtem_parcela(m, string_para_coordenada(i))) or eh_parcela_marcada(obtem_parcela(m, string_para_coordenada(i))):
+                return False
+    return True
 
+#2.2.2
+def turno_jogador(m):
+    action = input('Escolha uma ação, [L]impar ou [M]arcar:')
+    coord = input('Escolha uma coordenada:')
+    while coord not in m:
+        action = input('Escolha uma ação, [L]impar ou [M]arcar:')
+        coord = input('Escolha uma coordenada:')
+    if action == 'L':
+        if eh_parcela_minada(obtem_parcela(m, string_para_coordenada(coord))):
+            limpa_campo(m, string_para_coordenada(coord))
+            return False
+        else:
+            limpa_campo(m, string_para_coordenada(coord))
+            return True
+    elif action == 'M':
+        marca_parcela(obtem_parcela(m, string_para_coordenada(coord)))
+        return True
 
 

@@ -78,3 +78,23 @@ def obtem_numero_limpas_vizinhas(m, j):
 #m = coloca_minas(m, c, g, 16)
 #limpa_campo(m, c)
 #print(campo_para_str(m))
+
+#m = cria_campo('E',5)
+#g = cria_gerador(32, 1)
+#c = cria_coordenada('D', 4)
+#m = coloca_minas(m, c, g, 2)
+#print(campo_para_str(limpa_campo(m, c)))
+
+#m = cria_campo('F',6)
+#print(jogo_ganho(m))
+#g = cria_gerador(32, 2)
+#c = cria_coordenada('D', 4)
+#m = coloca_minas(m, c, g, 1)
+#print(campo_para_str(limpa_campo(m, c)))
+#print(jogo_ganho(m))
+
+#m = cria_campo('M',5)
+#g = cria_gerador(32, 2)
+#c = cria_coordenada('G', 3)
+#m = coloca_minas(m, c, g, 5)
+#print(turno_jogador(m))
