@@ -1,11 +1,11 @@
 #2.1.1
 #TAD gerador
 def cria_gerador(b, s):
-    if (b != 32 and b != 64) or not isinstance(s, int) or s < 0 or s > (2**b)-1:
+    if (b != 32 and b != 64) or not isinstance(b, int) or not isinstance(s, int) or s < 1 or s > (2**b)-1:
         raise ValueError('cria_gerador: argumentos invalidos')
     return {'bits': b, 'seed': s}
 
-def copia_gerador(g):
+def cria_copia_gerador(g):
     return g.copy()
 
 def obtem_estado(g):
@@ -17,12 +17,12 @@ def define_estado(g,s):
 
 def atualiza_estado(g):
     s = obtem_estado(g)
-    if copia_gerador(g)['bits'] == 32:
+    if cria_copia_gerador(g)['bits'] == 32:
         s ^= (s << 13) & 0xFFFFFFFF
         s ^= (s >> 17) & 0xFFFFFFFF
         s ^= (s << 5) & 0xFFFFFFFF
         define_estado(g,s)
-    if copia_gerador(g)['bits'] == 64:
+    if cria_copia_gerador(g)['bits'] == 64:
         s ^= (s << 13) & 0xFFFFFFFFFFFFFFFF
         s ^= (s >> 7) & 0xFFFFFFFFFFFFFFFF
         s ^= (s << 17) & 0xFFFFFFFFFFFFFFFF
@@ -32,19 +32,19 @@ def atualiza_estado(g):
 def eh_gerador(arg):
     if isinstance(arg, dict) and len(arg) == 2:
         if 'bits' in arg and 'seed' in arg:
-            if copia_gerador(arg)['bits'] == 32 or copia_gerador(arg)['bits'] == 64: 
-                if isinstance(obtem_estado(arg), int) and (2**copia_gerador(arg)['bits'])-1 >= obtem_estado(arg) >= 0:
+            if cria_copia_gerador(arg)['bits'] == 32 or cria_copia_gerador(arg)['bits'] == 64: 
+                if isinstance(obtem_estado(arg), int) and (2**cria_copia_gerador(arg)['bits'])-1 >= obtem_estado(arg) >= 0:
                     return True
     return False
 
 def geradores_iguais(g1, g2):
     if eh_gerador(g1) and eh_gerador(g2):
-        if copia_gerador(g1)['bits'] == copia_gerador(g2)['bits'] and obtem_estado(g1) == obtem_estado(g2):
+        if cria_copia_gerador(g1)['bits'] == cria_copia_gerador(g2)['bits'] and obtem_estado(g1) == obtem_estado(g2):
             return True
     return False
 
 def gerador_para_str(g):
-    return 'xorshift' + str(copia_gerador(g)['bits']) + '(s=' + str(obtem_estado(g)) + ')'
+    return 'xorshift' + str(cria_copia_gerador(g)['bits']) + '(s=' + str(obtem_estado(g)) + ')'
 
 def gera_numero_aleatorio(g,n):
     atualiza_estado(g)
@@ -57,7 +57,7 @@ def gera_carater_aleatorio(g,c):
 #2.1.2
 #TAD coordenada
 def cria_coordenada(col, lin):
-    if not isinstance(col, str) or not isinstance(lin, int) or len(col) != 1 or not 65 <= ord(col) <= 90 or not 1 <= lin <= 99:
+    if not isinstance(col, str) or not isinstance(lin, int) or len(col) != 1 or not (65 <= ord(col) <= 90) or not (1 <= lin <= 99):
         raise ValueError('cria_coordenada: argumentos invalidos')
     return {'col': col, 'lin': lin}
 
@@ -85,7 +85,7 @@ def coordenada_para_str(c):
     else:
         return obtem_coluna(c) + str(obtem_linha(c))
 
-def string_para_coordenada(s):
+def str_para_coordenada(s):
     if s[1] == 0:
         return {'col': s[0], 'lin': int(s[2])}
     else:
@@ -202,25 +202,29 @@ def alterna_bandeira(p):
 #2.1.4    
 #TAD campo
 def cria_campo(c, l):
-    if not eh_coordenada(cria_coordenada(c,l)):
+    try:
+        cria_coordenada(c,l)
+    except ValueError:
         raise ValueError('cria_campo: argumentos invalidos')
+    #if not eh_coordenada(cria_coordenada(c,l)):
+    #    raise ValueError('cria_campo: argumentos invalidos')
     campo = {}
     for i in range(1, l+1):
-        for j in range (65, ord(c)+1):
+        for j in range(65, ord(c)+1):
             campo[coordenada_para_str(cria_coordenada(chr(j), i))] = cria_parcela()
     return campo
 
 def cria_copia_campo(m):
     copia_campo = {}
     for i in m:
-        copia_campo[i] = m[i]
+        copia_campo[i] = m[i].copy()
     return copia_campo
 
 def obtem_ultima_coluna(m):
-    return obtem_coluna(string_para_coordenada(list(m)[-1]))
+    return obtem_coluna(str_para_coordenada(list(m)[-1]))
 
 def obtem_ultima_linha(m):
-    return obtem_linha(string_para_coordenada(list(m)[-1]))
+    return obtem_linha(str_para_coordenada(list(m)[-1]))
 
 def obtem_parcela(m, c):
     return m[coordenada_para_str(c)]
@@ -229,9 +233,9 @@ def obtem_coordenadas(m, s):
     res = []
     for i in m:
         if m[i]['estado'] == s[:-1]:
-            res.append(string_para_coordenada(i))
+            res.append(str_para_coordenada(i))
         elif s == 'minadas' and m[i]['mina']:
-            res.append(string_para_coordenada(i))
+            res.append(str_para_coordenada(i))
     return tuple(res)
 
 def eh_coordenada_do_campo(m,c):
@@ -241,7 +245,7 @@ def obtem_numero_minas_vizinhas(m,c):
     viz = obtem_coordenadas_vizinhas(c)
     counter = 0
     for i in tuple(coordenada_para_str(p) for p in viz):
-        if eh_coordenada_do_campo(m, string_para_coordenada(i)):
+        if eh_coordenada_do_campo(m, str_para_coordenada(i)):
             if  m[i]['mina']:
                 counter += 1
     return counter
@@ -249,16 +253,18 @@ def obtem_numero_minas_vizinhas(m,c):
 def eh_campo(arg):
     if isinstance(arg, dict) and len(arg) != 0:
         for i in cria_copia_campo(arg):
-            if eh_coordenada(string_para_coordenada(i)):
+            if eh_coordenada(str_para_coordenada(i)):
                 if eh_parcela(cria_copia_campo(arg)[i]):
                     return True
     return False
         
 def campos_iguais(m1,m2):
     if eh_campo(m1) and eh_campo(m2):
-        for i in m1:
-            if i in m2 and obtem_parcela(m1, i) == obtem_parcela(m2, i):
-                return True
+        if len(m1) == len(m2):
+            for i in m1:
+                if i in m2 and obtem_parcela(m1, str_para_coordenada(i)) != obtem_parcela(m2, str_para_coordenada(i)):
+                    return False
+            return True
     return False
 
 def campo_para_str(m):
@@ -290,10 +296,10 @@ def campo_para_str(m):
                 string3 += parcela_para_str(obtem_parcela(m, cria_coordenada(k,j)))
         string3 += '|\n'
 
-    return string1 + string2 + string3 + string2
+    return string1 + string2 + string3 + string2[:-1]
 
 def coloca_minas(m, c, g, n):
-    coord_proib = [coordenada_para_str] 
+    coord_proib = [coordenada_para_str(c)] 
     for i in obtem_coordenadas_vizinhas(c):
         if eh_coordenada_do_campo(m, i):
             coord_proib.append(coordenada_para_str(i))
@@ -307,51 +313,95 @@ def coloca_minas(m, c, g, n):
     return m
 
 def limpa_campo(m, c):
-    if not eh_parcela_minada(obtem_parcela(m,c)):
+    if eh_parcela_minada(obtem_parcela(m, c)) or obtem_numero_minas_vizinhas(m, c) >= 1:
         limpa_parcela(obtem_parcela(m, c))
-        n_analisadas = []
-        if obtem_numero_minas_vizinhas(m, c) == 0:
-            for i in obtem_coordenadas_vizinhas(c):
-                if eh_coordenada_do_campo(m, i):
-                    limpa_parcela(obtem_parcela(m, i))
-                    n_analisadas.append(i)
-        while len(n_analisadas) > 0:
-            n_analisadas_l = n_analisadas.copy()
-            for j in n_analisadas_l:
-                n_analisadas.remove(j)
-                if obtem_numero_minas_vizinhas(m, j) == 0:
-                    for k in obtem_coordenadas_vizinhas(j):
-                        if eh_coordenada_do_campo(m, k) and not eh_parcela_limpa(obtem_parcela(m, k)):
-                            limpa_parcela(obtem_parcela(m, k))
-                            n_analisadas.append(k)
         return m
-    else:
-        return m
+    limpa_parcela(obtem_parcela(m, c))
+    n_analisadas = []
+    if obtem_numero_minas_vizinhas(m, c) == 0:
+        for i in obtem_coordenadas_vizinhas(c):
+            if eh_coordenada_do_campo(m, i):
+                limpa_parcela(obtem_parcela(m, i))
+                n_analisadas.append(i)
+    while len(n_analisadas) > 0:
+        n_analisadas_l = n_analisadas.copy()
+        for j in n_analisadas_l:
+            n_analisadas.remove(j)
+            if obtem_numero_minas_vizinhas(m, j) == 0:
+                for k in obtem_coordenadas_vizinhas(j):
+                    if eh_coordenada_do_campo(m, k) and not eh_parcela_limpa(obtem_parcela(m, k)) and not eh_parcela_marcada(obtem_parcela(m, k)):
+                        limpa_parcela(obtem_parcela(m, k))
+                        n_analisadas.append(k)
+    return m
 
 #2.2.1
 def jogo_ganho(m):
     for i in m:
-        if not eh_parcela_minada(obtem_parcela(m, string_para_coordenada(i))):
-            if eh_parcela_tapada(obtem_parcela(m, string_para_coordenada(i))) or eh_parcela_marcada(obtem_parcela(m, string_para_coordenada(i))):
+        if not eh_parcela_minada(obtem_parcela(m, str_para_coordenada(i))):
+            if eh_parcela_tapada(obtem_parcela(m, str_para_coordenada(i))) or eh_parcela_marcada(obtem_parcela(m, str_para_coordenada(i))):
                 return False
     return True
 
 #2.2.2
 def turno_jogador(m):
     action = input('Escolha uma ação, [L]impar ou [M]arcar:')
+    while not (action == 'L' or action == 'M'):
+        action = input('Escolha uma ação, [L]impar ou [M]arcar:')
     coord = input('Escolha uma coordenada:')
     while coord not in m:
-        action = input('Escolha uma ação, [L]impar ou [M]arcar:')
         coord = input('Escolha uma coordenada:')
     if action == 'L':
-        if eh_parcela_minada(obtem_parcela(m, string_para_coordenada(coord))):
-            limpa_campo(m, string_para_coordenada(coord))
+        if eh_parcela_minada(obtem_parcela(m, str_para_coordenada(coord))):
+            limpa_campo(m, str_para_coordenada(coord))
             return False
         else:
-            limpa_campo(m, string_para_coordenada(coord))
+            limpa_campo(m, str_para_coordenada(coord))
             return True
     elif action == 'M':
-        marca_parcela(obtem_parcela(m, string_para_coordenada(coord)))
+        marca_parcela(obtem_parcela(m, str_para_coordenada(coord)))
         return True
+
+#2.2.3
+def minas(c, l, n, d, s):
+    try:
+        cria_gerador(d, s)
+        cria_campo(c, l)
+    except ValueError:
+        raise ValueError('minas: argumentos invalidos')
+    #if not eh_gerador(cria_gerador(d, s)) or not eh_campo(cria_campo(c, l)):
+    #    raise ValueError('minas: argumentos invalidos')
+    if not isinstance(n, int) or n < 1 or n > len(cria_campo(c, l)):
+        raise ValueError('minas: argumentos invalidos')
+    if (l < 3 and (64 - ord(c)) < 2) or (l < 3 and (64 - ord(c)) < 2):
+        raise ValueError('minas: argumentos invalidos')
+    g = cria_gerador(d, s)
+    m = cria_campo(c, l)
+    bandeiras = 0
+    print(f'   [Bandeiras {bandeiras}/{n}]')
+    print(campo_para_str(m))
+    coord_minas = input('Escolha uma coordenada:')
+    while coord_minas not in m:
+        coord_minas = input('Escolha uma coordenada:')
+    coloca_minas(m, str_para_coordenada(coord_minas), g, n)
+    limpa_campo(m, str_para_coordenada(coord_minas))
+    print(f'   [Bandeiras {bandeiras}/{n}]')
+    print(campo_para_str(m))
+    while not jogo_ganho(m):
+        if not turno_jogador(m):
+            for i in m:
+                if eh_parcela_marcada(obtem_parcela(m, str_para_coordenada(i))):
+                    bandeiras += 1
+            print(f'   [Bandeiras {bandeiras}/{n}]')
+            print(campo_para_str(m))
+            print('BOOOOOOOM!!!')
+            return False
+        for i in m:
+            if eh_parcela_marcada(obtem_parcela(m, str_para_coordenada(i))):
+                bandeiras += 1
+        print(f'   [Bandeiras {bandeiras}/{n}]')
+        print(campo_para_str(m))
+        bandeiras = 0    
+    print('VITORIA!!!')
+    return True
 
 
