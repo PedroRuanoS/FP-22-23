@@ -231,11 +231,22 @@ def obtem_parcela(m, c):
 
 def obtem_coordenadas(m, s):
     res = []
-    for i in m:
-        if m[i]['estado'] == s[:-1]:
-            res.append(str_para_coordenada(i))
-        elif s == 'minadas' and m[i]['mina']:
-            res.append(str_para_coordenada(i))
+    if s == 'limpas':
+        for i in m:
+            if eh_parcela_limpa(obtem_parcela(m, str_para_coordenada(i))):
+                res.append(str_para_coordenada(i))
+    if s == 'tapadas':
+        for i in m:
+            if eh_parcela_tapada(obtem_parcela(m, str_para_coordenada(i))):
+                res.append(str_para_coordenada(i))
+    if s == 'marcadas':
+        for i in m:
+            if eh_parcela_marcada(obtem_parcela(m, str_para_coordenada(i))):
+                res.append(str_para_coordenada(i))
+    if s == 'minadas':
+        for i in m:
+            if eh_parcela_minada(obtem_parcela(m, str_para_coordenada(i))):
+                res.append(str_para_coordenada(i))
     return tuple(res)
 
 def eh_coordenada_do_campo(m,c):
@@ -246,7 +257,7 @@ def obtem_numero_minas_vizinhas(m,c):
     counter = 0
     for i in tuple(coordenada_para_str(p) for p in viz):
         if eh_coordenada_do_campo(m, str_para_coordenada(i)):
-            if  m[i]['mina']:
+            if eh_parcela_minada(obtem_parcela(m, str_para_coordenada(i))):
                 counter += 1
     return counter
 
@@ -336,11 +347,9 @@ def limpa_campo(m, c):
 
 #2.2.1
 def jogo_ganho(m):
-    for i in m:
-        if not eh_parcela_minada(obtem_parcela(m, str_para_coordenada(i))):
-            if eh_parcela_tapada(obtem_parcela(m, str_para_coordenada(i))) or eh_parcela_marcada(obtem_parcela(m, str_para_coordenada(i))):
-                return False
-    return True
+    if len(obtem_coordenadas(m, 'minadas')) == len(obtem_coordenadas(m, 'marcadas')) + len(obtem_coordenadas(m, 'tapadas')):
+        return True
+    return False
 
 #2.2.2
 def turno_jogador(m):
@@ -348,7 +357,7 @@ def turno_jogador(m):
     while not (action == 'L' or action == 'M'):
         action = input('Escolha uma ação, [L]impar ou [M]arcar:')
     coord = input('Escolha uma coordenada:')
-    while coord not in m:
+    while not eh_coordenada_do_campo(m, str_para_coordenada(coord)):
         coord = input('Escolha uma coordenada:')
     if action == 'L':
         if eh_parcela_minada(obtem_parcela(m, str_para_coordenada(coord))):
@@ -358,7 +367,7 @@ def turno_jogador(m):
             limpa_campo(m, str_para_coordenada(coord))
             return True
     elif action == 'M':
-        marca_parcela(obtem_parcela(m, str_para_coordenada(coord)))
+        alterna_bandeira(obtem_parcela(m, str_para_coordenada(coord)))
         return True
 
 #2.2.3
@@ -368,8 +377,6 @@ def minas(c, l, n, d, s):
         cria_campo(c, l)
     except ValueError:
         raise ValueError('minas: argumentos invalidos')
-    #if not eh_gerador(cria_gerador(d, s)) or not eh_campo(cria_campo(c, l)):
-    #    raise ValueError('minas: argumentos invalidos')
     if not isinstance(n, int) or n < 1 or n > len(cria_campo(c, l)):
         raise ValueError('minas: argumentos invalidos')
     if (l < 3 and (64 - ord(c)) < 2) or (l < 3 and (64 - ord(c)) < 2):
@@ -380,7 +387,7 @@ def minas(c, l, n, d, s):
     print(f'   [Bandeiras {bandeiras}/{n}]')
     print(campo_para_str(m))
     coord_minas = input('Escolha uma coordenada:')
-    while coord_minas not in m:
+    while len(coord_minas) != 3 or (int(coord_minas[1:]) < 10 and len(coord_minas[1:]) < 2) or not eh_coordenada_do_campo(m, str_para_coordenada(coord_minas)):
         coord_minas = input('Escolha uma coordenada:')
     coloca_minas(m, str_para_coordenada(coord_minas), g, n)
     limpa_campo(m, str_para_coordenada(coord_minas))
@@ -388,20 +395,14 @@ def minas(c, l, n, d, s):
     print(campo_para_str(m))
     while not jogo_ganho(m):
         if not turno_jogador(m):
-            for i in m:
-                if eh_parcela_marcada(obtem_parcela(m, str_para_coordenada(i))):
-                    bandeiras += 1
+            bandeiras = len(obtem_coordenadas(m, 'marcadas'))
             print(f'   [Bandeiras {bandeiras}/{n}]')
             print(campo_para_str(m))
             print('BOOOOOOOM!!!')
             return False
-        for i in m:
-            if eh_parcela_marcada(obtem_parcela(m, str_para_coordenada(i))):
-                bandeiras += 1
+        bandeiras = len(obtem_coordenadas(m, 'marcadas'))
         print(f'   [Bandeiras {bandeiras}/{n}]')
-        print(campo_para_str(m))
-        bandeiras = 0    
+        print(campo_para_str(m)) 
     print('VITORIA!!!')
     return True
-
 
