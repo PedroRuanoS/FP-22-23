@@ -219,7 +219,8 @@ def esconde_mina(p):
 
 def eh_parcela(arg):
     '''eh_parcela: unversal -> booleano
-    Esta função verifica se o argumento arg é uma '''
+    Esta função verifica se o argumento arg é um TAD parcela (devolve True se sim, e False
+    caso contrário'''
     if isinstance(arg, dict) and len(arg) == 2:
         if 'estado' in arg and 'mina' in arg:
             if isinstance(cria_copia_parcela(arg)['estado'], str) and isinstance(cria_copia_parcela(arg)['mina'], bool) and (cria_copia_parcela(arg)['estado'] == 'limpa'
@@ -228,6 +229,8 @@ def eh_parcela(arg):
     return False
 
 def eh_parcela_tapada(p):
+    '''eh_parcela_tapada: parcela -> booleano
+    Esta função '''
     if eh_parcela(p) and cria_copia_parcela(p)['estado'] == 'tapada':
         return True
     return False
@@ -407,7 +410,7 @@ def limpa_campo(m, c):
         n_analisadas = []
         if obtem_numero_minas_vizinhas(m, c) == 0:
             for i in obtem_coordenadas_vizinhas(c):
-                if eh_coordenada_do_campo(m, i) and not eh_parcela_limpa(obtem_parcela(m, k)) and not eh_parcela_marcada(obtem_parcela(m, k)):
+                if eh_coordenada_do_campo(m, i) and not eh_parcela_limpa(obtem_parcela(m, i)) and not eh_parcela_marcada(obtem_parcela(m, i)):
                     limpa_parcela(obtem_parcela(m, i))
                     n_analisadas.append(i)
         while len(n_analisadas) > 0:
