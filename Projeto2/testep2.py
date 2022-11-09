@@ -412,6 +412,13 @@ def coloca_minas(m, c, g, n):
             tup += (g,)
     return tup
 
-print(coloca_minas(cria_campo('R', 14), cria_coordenada('A', 1), cria_gerador(64, 555), 40))
+#print(coloca_minas(cria_campo('R', 14), cria_coordenada('A', 1), cria_gerador(64, 555), 40))
 
-print(turno_jogador(coloca_minas(cria_campo('R',7),cria_coordenada('G',4),cria_gerador(64,9),5)))
+#print(turno_jogador(coloca_minas(cria_campo('R',7),cria_coordenada('G',4),cria_gerador(64,9),5)))
+def colhao(n):
+    try:
+        int(n)
+    except ValueError:
+        return False
+
+print(colhao('a'))

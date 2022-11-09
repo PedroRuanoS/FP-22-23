@@ -352,12 +352,18 @@ def jogo_ganho(m):
     return False
 
 #2.2.2
+def str_para_int_aux(n):
+    try:
+        int(n)
+    except ValueError:
+        return True
+
 def turno_jogador(m):
     action = input('Escolha uma ação, [L]impar ou [M]arcar:')
     while not (action == 'L' or action == 'M'):
         action = input('Escolha uma ação, [L]impar ou [M]arcar:')
     coord = input('Escolha uma coordenada:')
-    while not eh_coordenada_do_campo(m, str_para_coordenada(coord)):
+    while len(coord) != 3 or str_para_int_aux(coord[1:]) or (int(coord[1:]) < 10 and len(coord[1:]) < 2) or not eh_coordenada_do_campo(m, str_para_coordenada(coord)):
         coord = input('Escolha uma coordenada:')
     if action == 'L':
         if eh_parcela_minada(obtem_parcela(m, str_para_coordenada(coord))):
@@ -387,7 +393,7 @@ def minas(c, l, n, d, s):
     print(f'   [Bandeiras {bandeiras}/{n}]')
     print(campo_para_str(m))
     coord_minas = input('Escolha uma coordenada:')
-    while len(coord_minas) != 3 or (int(coord_minas[1:]) < 10 and len(coord_minas[1:]) < 2) or not eh_coordenada_do_campo(m, str_para_coordenada(coord_minas)):
+    while len(coord_minas) != 3 or str_para_int_aux(coord_minas[1:]) or (int(coord_minas[1:]) < 10 and len(coord_minas[1:]) < 2) or not eh_coordenada_do_campo(m, str_para_coordenada(coord_minas)):
         coord_minas = input('Escolha uma coordenada:')
     coloca_minas(m, str_para_coordenada(coord_minas), g, n)
     limpa_campo(m, str_para_coordenada(coord_minas))
@@ -406,3 +412,9 @@ def minas(c, l, n, d, s):
     print('VITORIA!!!')
     return True
 
+#coloca_minas(cria_campo('R',7),cria_coordenada('G',4),cria_gerador(64,9),5)
+#turno_jogador(coloca_minas(cria_campo('R',7),cria_coordenada('G',4),cria_gerador(64,9),5))
+#m = coloca_minas(cria_campo('R',7), cria_coordenada('G',4), cria_gerador(64,9),5)
+#print(turno_jogador(m))
+#print(campo_para_str(m))
+#minas('N', 6, 6, 32, 100)
