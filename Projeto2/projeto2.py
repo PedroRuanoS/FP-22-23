@@ -1,21 +1,29 @@
 #2.1.1
 #TAD gerador
 def cria_gerador(b, s):
+    '''Esta função recebe um inteiro b (bits) do gerador e um inteiro positivo s (seed/estado inicial),
+    e devolve o gerador correspondente, verifica também a validade dos argumentos. '''
     if (b != 32 and b != 64) or not isinstance(b, int) or not isinstance(s, int) or s < 1 or s > (2**b)-1:
         raise ValueError('cria_gerador: argumentos invalidos')
     return {'bits': b, 'seed': s}
 
 def cria_copia_gerador(g):
+    '''Esta função recebe um gerador g e devolve uma cópia do mesmo'''
     return g.copy()
 
 def obtem_estado(g):
+    '''Esta função recebe um gerador e devolve o estado atual do gerador g'''
     return g['seed']
 
 def define_estado(g,s):
+    '''Esta função recebe um gerador define um novo valor do seu estado s,
+    e devolve s'''
     g['seed'] = s
     return s
 
 def atualiza_estado(g):
+    '''Esta função recebe um gerador g e atualiza o estado do mesmo de acordo com o algoritmo
+    xorshift de geraação de números pseudoaleatórios, devolvendo-o'''
     s = obtem_estado(g)
     if cria_copia_gerador(g)['bits'] == 32:
         s ^= (s << 13) & 0xFFFFFFFF
@@ -30,6 +38,8 @@ def atualiza_estado(g):
     return obtem_estado(g)
 
 def eh_gerador(arg):
+    '''Esta função verifica se o argumento arg é um TAD gerador (devolvendo True se sim, e False
+    caso contrário)'''
     if isinstance(arg, dict) and len(arg) == 2:
         if 'bits' in arg and 'seed' in arg:
             if cria_copia_gerador(arg)['bits'] == 32 or cria_copia_gerador(arg)['bits'] == 64: 
@@ -38,36 +48,50 @@ def eh_gerador(arg):
     return False
 
 def geradores_iguais(g1, g2):
+    '''Esta função verifica se g1 e g2 são geradores e, se sim, se iguais (devolvendo True se sim, e 
+    False caso contrário)'''
     if eh_gerador(g1) and eh_gerador(g2):
         if cria_copia_gerador(g1)['bits'] == cria_copia_gerador(g2)['bits'] and obtem_estado(g1) == obtem_estado(g2):
             return True
     return False
 
 def gerador_para_str(g):
+    '''Esta função recebe um gerador g e devolve uma cadeia de caracteres que representa
+    o mesmo (da acordo com os exemplos da ficha do enunciado)'''
     return 'xorshift' + str(cria_copia_gerador(g)['bits']) + '(s=' + str(obtem_estado(g)) + ')'
 
 def gera_numero_aleatorio(g,n):
+    '''Esta função recebe um gerador g e um inteiro n e devolve um número aleatório 
+    (depois de atualizar o estado) que está entre desde 1 até n'''
     atualiza_estado(g)
     return 1 + (obtem_estado(g) % n)
 
 def gera_carater_aleatorio(g,c):
+    '''Esta função recebe um gerador g e um caracter c e devolve um caracter aleatorio 
+    (depois de atualizar o estado) que está entre 'A' e c (de acordo com o abecedário)'''
     atualiza_estado(g)
     return chr(65 + (obtem_estado(g) % (ord(c) - ord('A') + 1)))
 
 #2.1.2
 #TAD coordenada
 def cria_coordenada(col, lin):
+    '''Esta função recebe um caracter col (coluna) e um numero lin (linha) e volve a coordenada
+    correspondente, verifica também a validade dos argumentos'''
     if not isinstance(col, str) or not isinstance(lin, int) or len(col) != 1 or not (65 <= ord(col) <= 90) or not (1 <= lin <= 99):
         raise ValueError('cria_coordenada: argumentos invalidos')
     return {'col': col, 'lin': lin}
 
 def obtem_coluna(c):
+    '''Esta função recebe uma coordenada c e devolve o valor da sua coluna'''
     return c['col']
 
 def obtem_linha(c):
+    '''Esta função recebe uma coordenada c e devolve o valor da sua linha'''
     return c['lin']
 
 def eh_coordenada(arg):
+    '''Esta função verifica se o argumento arg é um TAD coordenada (devolvendo True se sim, e False
+    caso contrário) '''
     if isinstance(arg, dict) and len(arg) == 2:
         if 'col' in arg and 'lin' in arg:
             if isinstance(obtem_coluna(arg), str) and isinstance(obtem_linha(arg), int) and len(obtem_coluna(arg)) == 1 and 65 <= ord(obtem_coluna(arg)) <= 90 and 1 <= obtem_linha(arg) <= 99:
@@ -75,23 +99,32 @@ def eh_coordenada(arg):
     return False
 
 def coordenadas_iguais(c1, c2):
+    '''Esta função verifica se os argumentos c1 e c2 são coordenadas e, se sim, se são iguais 
+    (devolvendo True se sim, e False caso contrário)'''
     if eh_coordenada(c1) and eh_coordenada(c2) and obtem_coluna(c1) == obtem_coluna(c2) and obtem_linha(c1) == obtem_linha(c2):
         return True
     return False
 
 def coordenada_para_str(c):
+    '''Esta função recebe uma coordenada c e devolve uma cadeia de caracteres que representa
+    a mesma (da acordo com os exemplos da ficha do enunciado)'''
     if obtem_linha(c) < 10:
         return obtem_coluna(c) + '0' + str(obtem_linha(c))
     else:
         return obtem_coluna(c) + str(obtem_linha(c))
 
 def str_para_coordenada(s):
+    '''Esta função recebe a cadeia de caracteres s e devolve a coordenada no formato TAD 
+    coordenada'''
     if s[1] == 0:
         return {'col': s[0], 'lin': int(s[2])}
     else:
         return {'col': s[0], 'lin': int(s[1] + s[2])}
 
 def obtem_coordenadas_vizinhas(c):
+    '''Esta função recebe uma coordenada c e devolve um tuplo com todas as coordenadas
+    vizinhas à mesma, o tuplo está ordenado (começando pela coordenada da diagonal acima à
+    esquerda e seguindo os ponteiros do relógio)'''
     if obtem_coluna(c) == 'A':
         if obtem_linha(c) == 1: #3
             return (cria_coordenada('B', 1), cria_coordenada('B', 2), cria_coordenada('A', 2))
@@ -120,6 +153,9 @@ def obtem_coordenadas_vizinhas(c):
             cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)+1), cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)))
             
 def obtem_coordenada_aleatoria(c,g):
+    '''Esta função recebe uma coordenada c (contém a maior coluna e maior linha possíveis) 
+    e um gerador g, e devolve uma coordenada gerada aleatoriamente (utilizando as funções
+    de alto nível associadas ao TAD anterior)'''
     return cria_coordenada(gera_carater_aleatorio(g, obtem_coluna(c)), gera_numero_aleatorio(g, obtem_linha(c)))
 
 #2.1.3 
@@ -264,11 +300,11 @@ def obtem_numero_minas_vizinhas(m,c):
 def eh_campo(arg):
     if isinstance(arg, dict) and len(arg) != 0:
         for i in cria_copia_campo(arg):
-            if eh_coordenada(str_para_coordenada(i)):
-                if eh_parcela(cria_copia_campo(arg)[i]):
-                    return True
-    return False
-        
+            if not eh_coordenada(str_para_coordenada(i)) or not eh_parcela(cria_copia_campo(arg)[i]):
+                return False
+        return True
+    return False    
+    
 def campos_iguais(m1,m2):
     if eh_campo(m1) and eh_campo(m2):
         if len(m1) == len(m2):
@@ -406,15 +442,9 @@ def minas(c, l, n, d, s):
             print(campo_para_str(m))
             print('BOOOOOOOM!!!')
             return False
-        bandeiras = len(obtem_coordenadas(m, 'marcadas'))
-        print(f'   [Bandeiras {bandeiras}/{n}]')
-        print(campo_para_str(m)) 
+        else:
+            bandeiras = len(obtem_coordenadas(m, 'marcadas'))
+            print(f'   [Bandeiras {bandeiras}/{n}]')
+            print(campo_para_str(m)) 
     print('VITORIA!!!')
     return True
-
-#coloca_minas(cria_campo('R',7),cria_coordenada('G',4),cria_gerador(64,9),5)
-#turno_jogador(coloca_minas(cria_campo('R',7),cria_coordenada('G',4),cria_gerador(64,9),5))
-#m = coloca_minas(cria_campo('R',7), cria_coordenada('G',4), cria_gerador(64,9),5)
-#print(turno_jogador(m))
-#print(campo_para_str(m))
-#minas('N', 6, 6, 32, 100)
