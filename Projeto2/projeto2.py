@@ -1,28 +1,33 @@
 #2.1.1
 #TAD gerador
 def cria_gerador(b, s):
-    '''Esta função recebe um inteiro b (bits) do gerador e um inteiro positivo s (seed/estado inicial),
-    e devolve o gerador correspondente, verifica também a validade dos argumentos. '''
+    '''cria gerador : int x int 7 -> gerador
+    Esta função recebe um inteiro b (bits) do gerador e um inteiro s (seed/estado inicial),
+    e devolve o gerador (no formato TAD gerador) correspondente, verifica também a validade dos argumentos. '''
     if (b != 32 and b != 64) or not isinstance(b, int) or not isinstance(s, int) or s < 1 or s > (2**b)-1:
         raise ValueError('cria_gerador: argumentos invalidos')
-    return {'bits': b, 'seed': s}
+    return {'bits': b, 'seed': s}   #gerador é representado por um dicionário
 
 def cria_copia_gerador(g):
-    '''Esta função recebe um gerador g e devolve uma cópia do mesmo'''
+    '''cria_copia_gerador: gerador -> gerador
+    Esta função recebe um gerador g e devolve uma cópia do mesmo'''
     return g.copy()
 
 def obtem_estado(g):
-    '''Esta função recebe um gerador e devolve o estado atual do gerador g'''
+    '''obtem_estado: gerador -> int
+    Esta função recebe um gerador e devolve o estado atual do gerador g'''
     return g['seed']
 
 def define_estado(g,s):
-    '''Esta função recebe um gerador define um novo valor do seu estado s,
+    '''define_estado: gerador x int -> int
+    Esta função recebe um gerador g define um novo valor do seu estado s,
     e devolve s'''
     g['seed'] = s
     return s
 
 def atualiza_estado(g):
-    '''Esta função recebe um gerador g e atualiza o estado do mesmo de acordo com o algoritmo
+    '''atualiza_estado: gerador -> int
+    Esta função recebe um gerador g e atualiza o estado do mesmo de acordo com o algoritmo
     xorshift de geraação de números pseudoaleatórios, devolvendo-o'''
     s = obtem_estado(g)
     if cria_copia_gerador(g)['bits'] == 32:
@@ -38,7 +43,8 @@ def atualiza_estado(g):
     return obtem_estado(g)
 
 def eh_gerador(arg):
-    '''Esta função verifica se o argumento arg é um TAD gerador (devolvendo True se sim, e False
+    '''eh_gerador: universal -> booleano
+    Esta função verifica se o argumento arg é um TAD gerador (devolvendo True se sim, e False
     caso contrário)'''
     if isinstance(arg, dict) and len(arg) == 2:
         if 'bits' in arg and 'seed' in arg:
@@ -48,7 +54,8 @@ def eh_gerador(arg):
     return False
 
 def geradores_iguais(g1, g2):
-    '''Esta função verifica se g1 e g2 são geradores e, se sim, se iguais (devolvendo True se sim, e 
+    '''geradores_iguais: gerador x gerador 7 -> booleano
+    Esta função verifica se g1 e g2 são geradores e, se sim, se iguais (devolvendo True se sim, e 
     False caso contrário)'''
     if eh_gerador(g1) and eh_gerador(g2):
         if cria_copia_gerador(g1)['bits'] == cria_copia_gerador(g2)['bits'] and obtem_estado(g1) == obtem_estado(g2):
@@ -56,18 +63,21 @@ def geradores_iguais(g1, g2):
     return False
 
 def gerador_para_str(g):
-    '''Esta função recebe um gerador g e devolve uma cadeia de caracteres que representa
+    '''gerador_para_str: gerador -> str
+    Esta função recebe um gerador g e devolve uma cadeia de caracteres que representa
     o mesmo (da acordo com os exemplos da ficha do enunciado)'''
     return 'xorshift' + str(cria_copia_gerador(g)['bits']) + '(s=' + str(obtem_estado(g)) + ')'
 
 def gera_numero_aleatorio(g,n):
-    '''Esta função recebe um gerador g e um inteiro n e devolve um número aleatório 
+    '''gera_numero_aleatorio: gerador x int -> int
+    Esta função recebe um gerador g e um inteiro n e devolve um número aleatório 
     (depois de atualizar o estado) que está entre desde 1 até n'''
     atualiza_estado(g)
     return 1 + (obtem_estado(g) % n)
 
 def gera_carater_aleatorio(g,c):
-    '''Esta função recebe um gerador g e um caracter c e devolve um caracter aleatorio 
+    '''gera_caracter_aleatorio: gerador x str -> str
+    Esta função recebe um gerador g e um caracter c e devolve um caracter aleatorio 
     (depois de atualizar o estado) que está entre 'A' e c (de acordo com o abecedário)'''
     atualiza_estado(g)
     return chr(65 + (obtem_estado(g) % (ord(c) - ord('A') + 1)))
@@ -75,22 +85,26 @@ def gera_carater_aleatorio(g,c):
 #2.1.2
 #TAD coordenada
 def cria_coordenada(col, lin):
-    '''Esta função recebe um caracter col (coluna) e um numero lin (linha) e volve a coordenada
-    correspondente, verifica também a validade dos argumentos'''
+    '''cria_coordenada: str x int -> coordenada
+    Esta função recebe um caracter col (coluna) e um numero lin (linha) e volve a coordenada
+    (no formato TAD coordenada) correspondente, verifica também a validade dos argumentos'''
     if not isinstance(col, str) or not isinstance(lin, int) or len(col) != 1 or not (65 <= ord(col) <= 90) or not (1 <= lin <= 99):
         raise ValueError('cria_coordenada: argumentos invalidos')
-    return {'col': col, 'lin': lin}
+    return {'col': col, 'lin': lin} #coordenada é representada por um dicionário
 
 def obtem_coluna(c):
-    '''Esta função recebe uma coordenada c e devolve o valor da sua coluna'''
+    '''obtem_coluna: coordenada -> str
+    Esta função recebe uma coordenada c e devolve o valor da sua coluna'''
     return c['col']
 
 def obtem_linha(c):
-    '''Esta função recebe uma coordenada c e devolve o valor da sua linha'''
+    '''obtem_linha: coordenada -> int
+    Esta função recebe uma coordenada c e devolve o valor da sua linha'''
     return c['lin']
 
 def eh_coordenada(arg):
-    '''Esta função verifica se o argumento arg é um TAD coordenada (devolvendo True se sim, e False
+    '''eh_coordenada: universal -> booleano
+    Esta função verifica se o argumento arg é um TAD coordenada (devolvendo True se sim, e False
     caso contrário) '''
     if isinstance(arg, dict) and len(arg) == 2:
         if 'col' in arg and 'lin' in arg:
@@ -99,14 +113,16 @@ def eh_coordenada(arg):
     return False
 
 def coordenadas_iguais(c1, c2):
-    '''Esta função verifica se os argumentos c1 e c2 são coordenadas e, se sim, se são iguais 
+    '''coordenadas_iguais: coordenada x coordenada -> booleano
+    Esta função verifica se os argumentos c1 e c2 são coordenadas e, se sim, se são iguais 
     (devolvendo True se sim, e False caso contrário)'''
     if eh_coordenada(c1) and eh_coordenada(c2) and obtem_coluna(c1) == obtem_coluna(c2) and obtem_linha(c1) == obtem_linha(c2):
         return True
     return False
 
 def coordenada_para_str(c):
-    '''Esta função recebe uma coordenada c e devolve uma cadeia de caracteres que representa
+    '''coordenada_para_str: coordenada -> str
+    Esta função recebe uma coordenada c e devolve uma cadeia de caracteres que representa
     a mesma (da acordo com os exemplos da ficha do enunciado)'''
     if obtem_linha(c) < 10:
         return obtem_coluna(c) + '0' + str(obtem_linha(c))
@@ -114,7 +130,8 @@ def coordenada_para_str(c):
         return obtem_coluna(c) + str(obtem_linha(c))
 
 def str_para_coordenada(s):
-    '''Esta função recebe a cadeia de caracteres s e devolve a coordenada no formato TAD 
+    '''str_para_coordenada: str -> coordenada
+    Esta função recebe a cadeia de caracteres s e devolve a coordenada no formato TAD 
     coordenada'''
     if s[1] == 0:
         return {'col': s[0], 'lin': int(s[2])}
@@ -122,7 +139,8 @@ def str_para_coordenada(s):
         return {'col': s[0], 'lin': int(s[1] + s[2])}
 
 def obtem_coordenadas_vizinhas(c):
-    '''Esta função recebe uma coordenada c e devolve um tuplo com todas as coordenadas
+    '''obtem_coordenadas_vizinhas: coordenada -> tuplo
+    Esta função recebe uma coordenada c e devolve um tuplo com todas as coordenadas
     vizinhas à mesma, o tuplo está ordenado (começando pela coordenada da diagonal acima à
     esquerda e seguindo os ponteiros do relógio)'''
     if obtem_coluna(c) == 'A':
@@ -153,7 +171,8 @@ def obtem_coordenadas_vizinhas(c):
             cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)+1), cria_coordenada(chr(ord(obtem_coluna(c))-1), obtem_linha(c)))
             
 def obtem_coordenada_aleatoria(c,g):
-    '''Esta função recebe uma coordenada c (contém a maior coluna e maior linha possíveis) 
+    '''obtem_coordenada_aleatoria: coordenada x gerador -> coordenada
+    Esta função recebe uma coordenada c (contém a maior coluna e maior linha possíveis) 
     e um gerador g, e devolve uma coordenada gerada aleatoriamente (utilizando as funções
     de alto nível associadas ao TAD anterior)'''
     return cria_coordenada(gera_carater_aleatorio(g, obtem_coluna(c)), gera_numero_aleatorio(g, obtem_linha(c)))
@@ -161,28 +180,46 @@ def obtem_coordenada_aleatoria(c,g):
 #2.1.3 
 #TAD parcela
 def cria_parcela():
-    return {'estado': 'tapada', 'mina': False}
+    '''cria_parcela: {} -> parcela
+    Esta função devolve uma parcela tapada sem mina escondida'''
+    return {'estado': 'tapada', 'mina': False} #parcela é representada por um dicionário
 
 def cria_copia_parcela(p):
+    '''cria_copia_parcela: parcela -> parcela
+    Esta função recebe uma parcela p e devolve uma cópia da mesma'''
     return p.copy()
 
 def limpa_parcela(p):
+    '''limpa_parcela: parcela -> parcela
+    Esta função recebe uma parcela p modifica destrutivamente a mesma, alterando o seu estado 
+    para limpa, e devolve a própria parcela'''
     p['estado'] = 'limpa'
     return p
 
 def marca_parcela(p):
+    '''marca_parcela: parcela -> parcela
+    Esta função recebe uma parcela p modifica destrutivamente a mesma, alterando o seu estado 
+    para marcada, e devolve a própria parcela'''
     p['estado'] = 'marcada'
     return p
 
 def desmarca_parcela(p):
+    '''desmarca_parcela: parcela -> parcela
+    Esta função recebe uma parcela p modifica destrutivamente a mesma, alterando o seu estado 
+    para tapada, e devolve a própria parcela'''
     p['estado'] = 'tapada'
     return p
 
 def esconde_mina(p):
+    '''esconde_mina: parcela -> parcela
+    Esta função recebe uma parcela p modifica destrutivamente a mesma, escondendo uma mina na mesma, 
+    e devolve a própria parcela'''
     p['mina'] = True
     return p
 
 def eh_parcela(arg):
+    '''eh_parcela: unversal -> booleano
+    Esta função verifica se o argumento arg é uma '''
     if isinstance(arg, dict) and len(arg) == 2:
         if 'estado' in arg and 'mina' in arg:
             if isinstance(cria_copia_parcela(arg)['estado'], str) and isinstance(cria_copia_parcela(arg)['mina'], bool) and (cria_copia_parcela(arg)['estado'] == 'limpa'
@@ -360,26 +397,29 @@ def coloca_minas(m, c, g, n):
     return m
 
 def limpa_campo(m, c):
-    if eh_parcela_minada(obtem_parcela(m, c)) or obtem_numero_minas_vizinhas(m, c) >= 1:
-        limpa_parcela(obtem_parcela(m, c))
+    if eh_parcela_limpa(obtem_parcela(m,c)):
         return m
-    limpa_parcela(obtem_parcela(m, c))
-    n_analisadas = []
-    if obtem_numero_minas_vizinhas(m, c) == 0:
-        for i in obtem_coordenadas_vizinhas(c):
-            if eh_coordenada_do_campo(m, i):
-                limpa_parcela(obtem_parcela(m, i))
-                n_analisadas.append(i)
-    while len(n_analisadas) > 0:
-        n_analisadas_l = n_analisadas.copy()
-        for j in n_analisadas_l:
-            n_analisadas.remove(j)
-            if obtem_numero_minas_vizinhas(m, j) == 0:
-                for k in obtem_coordenadas_vizinhas(j):
-                    if eh_coordenada_do_campo(m, k) and not eh_parcela_limpa(obtem_parcela(m, k)) and not eh_parcela_marcada(obtem_parcela(m, k)):
-                        limpa_parcela(obtem_parcela(m, k))
-                        n_analisadas.append(k)
-    return m
+    else:
+        if eh_parcela_minada(obtem_parcela(m, c)) or obtem_numero_minas_vizinhas(m, c) >= 1:
+            limpa_parcela(obtem_parcela(m, c))
+            return m
+        limpa_parcela(obtem_parcela(m, c))
+        n_analisadas = []
+        if obtem_numero_minas_vizinhas(m, c) == 0:
+            for i in obtem_coordenadas_vizinhas(c):
+                if eh_coordenada_do_campo(m, i) and not eh_parcela_limpa(obtem_parcela(m, k)) and not eh_parcela_marcada(obtem_parcela(m, k)):
+                    limpa_parcela(obtem_parcela(m, i))
+                    n_analisadas.append(i)
+        while len(n_analisadas) > 0:
+            n_analisadas_l = n_analisadas.copy()
+            for j in n_analisadas_l:
+                n_analisadas.remove(j)
+                if obtem_numero_minas_vizinhas(m, j) == 0:
+                    for k in obtem_coordenadas_vizinhas(j):
+                        if eh_coordenada_do_campo(m, k) and not eh_parcela_limpa(obtem_parcela(m, k)) and not eh_parcela_marcada(obtem_parcela(m, k)):
+                            limpa_parcela(obtem_parcela(m, k))
+                            n_analisadas.append(k)
+        return m
 
 #2.2.1
 def jogo_ganho(m):
@@ -448,3 +488,5 @@ def minas(c, l, n, d, s):
             print(campo_para_str(m)) 
     print('VITORIA!!!')
     return True
+
+minas('N', 6, 6, 32, 100)
