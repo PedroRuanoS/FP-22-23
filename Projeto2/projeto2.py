@@ -6,7 +6,7 @@ def cria_gerador(b, s):
     e devolve o gerador (no formato TAD gerador) correspondente, verifica também a validade dos argumentos. '''
     if (b != 32 and b != 64) or not isinstance(b, int) or not isinstance(s, int) or s < 1 or s > (2**b)-1:
         raise ValueError('cria_gerador: argumentos invalidos')
-    return {'bits': b, 'seed': s}   #gerador é representado por um dicionário
+    return {'bits': b, 'seed': s}  #estrutura do gerador é representada por um dicionário
 
 def cria_copia_gerador(g):
     '''cria_copia_gerador: gerador -> gerador
@@ -86,11 +86,11 @@ def gera_carater_aleatorio(g,c):
 #TAD coordenada
 def cria_coordenada(col, lin):
     '''cria_coordenada: str x int -> coordenada
-    Esta função recebe um caracter col (coluna) e um numero lin (linha) e volve a coordenada
+    Esta função recebe um caracter col (coluna) e um numero lin (linha) e devolve a coordenada
     (no formato TAD coordenada) correspondente, verifica também a validade dos argumentos'''
     if not isinstance(col, str) or not isinstance(lin, int) or len(col) != 1 or not (65 <= ord(col) <= 90) or not (1 <= lin <= 99):
         raise ValueError('cria_coordenada: argumentos invalidos')
-    return {'col': col, 'lin': lin} #coordenada é representada por um dicionário
+    return {'col': col, 'lin': lin}  #estrutura da coordenada é representada por um dicionário
 
 def obtem_coluna(c):
     '''obtem_coluna: coordenada -> str
@@ -181,8 +181,8 @@ def obtem_coordenada_aleatoria(c,g):
 #TAD parcela
 def cria_parcela():
     '''cria_parcela: {} -> parcela
-    Esta função devolve uma parcela tapada sem mina escondida'''
-    return {'estado': 'tapada', 'mina': False} #parcela é representada por um dicionário
+    Esta função devolve uma parcela tapada sem mina escondida (no formato TAD parcela)'''
+    return {'estado': 'tapada', 'mina': False}  #estrutura da parcela é representada por um dicionário
 
 def cria_copia_parcela(p):
     '''cria_copia_parcela: parcela -> parcela
@@ -230,32 +230,48 @@ def eh_parcela(arg):
 
 def eh_parcela_tapada(p):
     '''eh_parcela_tapada: parcela -> booleano
-    Esta função '''
+    Esta função recebe uma parcela p e devolve True no caso desta estar tapada,
+    e devolve False caso contrário'''
     if eh_parcela(p) and cria_copia_parcela(p)['estado'] == 'tapada':
         return True
     return False
 
 def eh_parcela_marcada(p):
+    '''eh_parcela_marcada: parcela -> booleano
+    Esta função recebe uma parcela p e devolve True no caso desta estar marcada,
+    e devolve False caso contrário'''
     if eh_parcela(p) and cria_copia_parcela(p)['estado'] == 'marcada':
         return True
     return False
 
 def eh_parcela_limpa(p):
+    '''eh_parcela_limpa: parcela -> booleano
+    Esta função recebe uma parcela p e devolve True no caso desta estar limpa,
+    e devolve False caso contrário'''
     if eh_parcela(p) and cria_copia_parcela(p)['estado'] == 'limpa':
         return True
     return False
 
 def eh_parcela_minada(p):
+    '''eh_parcela_minada: parcela -> booleano
+    Esta função recebe uma parcela p e devolve True no caso desta estar minada,
+    e devolve False caso contrário'''
     if eh_parcela(p) and cria_copia_parcela(p)['mina']:
         return True
     return False
 
 def parcelas_iguais(p1, p2):
+    '''parcelas_iguais: parcela x parcela: booleano
+    Esta função recebe duas parcelas p1 e p2 e devolve True se ambas forem parcelas e se
+    forem iguais'''
     if eh_parcela(p1) and eh_parcela(p2) and cria_copia_parcela(p1)['estado'] == cria_copia_parcela(p2)['estado'] and cria_copia_parcela(p1)['mina'] == cria_copia_parcela(p2)['mina']:
         return True
     return False
 
 def parcela_para_str(p):
+    '''parcela_para_str: parcela -> str
+    Esta função recebe uma parcela p e devolve a representação do seu estado na forma de
+    cadeia de caracteres'''
     if eh_parcela_tapada(p):
         return '#'
     if eh_parcela_marcada(p):
@@ -266,6 +282,10 @@ def parcela_para_str(p):
         return 'X'
     
 def alterna_bandeira(p):
+    '''alterna_bandeira: parcela -> booleano
+    Esta função recebe uma parcela p e modifica a mesma destrutivamente (desmarca se estiver
+    marcada e marca se estiver tapada - devolve True, em qualquer outro caso - devolve False)
+    '''
     if eh_parcela_marcada(p):
         desmarca_parcela(p)
         return True
@@ -278,34 +298,51 @@ def alterna_bandeira(p):
 #2.1.4    
 #TAD campo
 def cria_campo(c, l):
+    '''cria_campo: str x int -> campo
+    Esta função recebe uma cadeia de caracteres c (ultima coluna) e um inteiro l (ultima linha), 
+    e devolve um campo (no formato TAD campo) do tamanho obtido a partir da ultima coluna e linha
+    (constituido por parcelas tapadas sem minas), esta função também verifica a validade dos seus 
+    argumentos'''
     try:
         cria_coordenada(c,l)
     except ValueError:
         raise ValueError('cria_campo: argumentos invalidos')
-    #if not eh_coordenada(cria_coordenada(c,l)):
-    #    raise ValueError('cria_campo: argumentos invalidos')
     campo = {}
     for i in range(1, l+1):
         for j in range(65, ord(c)+1):
             campo[coordenada_para_str(cria_coordenada(chr(j), i))] = cria_parcela()
-    return campo
+    return campo  #a estrutura do campo é representada por um dicionário
 
 def cria_copia_campo(m):
+    '''cria_copia_campo: campo -> campo
+    Esta função recebe um campo m e devolve uma cópia do mesmo'''
     copia_campo = {}
     for i in m:
         copia_campo[i] = m[i].copy()
     return copia_campo
 
 def obtem_ultima_coluna(m):
+    '''obtem_ultima_coluna: campo -> str
+    Esta função recebe um campo m e devolve a cadeia de caracteres correspondente à ultima
+    coluna do mesmo'''
     return obtem_coluna(str_para_coordenada(list(m)[-1]))
 
 def obtem_ultima_linha(m):
+    '''obtem_ultima_linha: campo -> int
+    Esta função recebe um campo m e devolve o inteiro correspondente à ultima linha do mesmo'''
     return obtem_linha(str_para_coordenada(list(m)[-1]))
 
 def obtem_parcela(m, c):
+    '''obtem_parcela: campo x coordenada -> parcela
+    Esta função recebe um campo m e uma coordenada c e devolve a parcela de m que se encontra
+    em c'''
     return m[coordenada_para_str(c)]
 
 def obtem_coordenadas(m, s):
+    '''obtem_coordenadas: campo x str -> tuplo
+    Esta função recebe um campo m e uma cadeia de caracteres s e devolve um tuplo formado
+    pelas coordenadas de m cujo estado é "s" (as coordenadas dentro do tuplo estão por ordem
+    ascendente de esquerda `a direita e de cima a baixo)'''
     res = []
     if s == 'limpas':
         for i in m:
@@ -326,9 +363,15 @@ def obtem_coordenadas(m, s):
     return tuple(res)
 
 def eh_coordenada_do_campo(m,c):
+    '''eh_coordenada_do_campo: campo x coordenada -> booleano
+    Esta função recebe um campo m e uma coordenada c e devolve True se esta estiver dentro do campo
+    (devolve False caso contrário)'''
     return coordenada_para_str(c) in m
 
 def obtem_numero_minas_vizinhas(m,c):
+    '''obtem_numero_minas_vizinhas: campo x coordenada -> int
+    Esta função recebe um campo m e uma coordenada c e devolve a quantidade de parcelas vizinhas que
+    têm uma mina escondida'''
     viz = obtem_coordenadas_vizinhas(c)
     counter = 0
     for i in tuple(coordenada_para_str(p) for p in viz):
@@ -338,6 +381,8 @@ def obtem_numero_minas_vizinhas(m,c):
     return counter
 
 def eh_campo(arg):
+    '''eh_campo: universal -> booleano
+    Esta função verifica se o argumento arg é um campo (devolve True se sim, False caso contrário)'''
     if isinstance(arg, dict) and len(arg) != 0:
         for i in cria_copia_campo(arg):
             if not eh_coordenada(str_para_coordenada(i)) or not eh_parcela(cria_copia_campo(arg)[i]):
@@ -346,6 +391,9 @@ def eh_campo(arg):
     return False    
     
 def campos_iguais(m1,m2):
+    '''campos_iguais: campo x campo -> booleano
+    Esta função recebe dois campos m1 e m2, e se ambos forem campos e forem iguais, devolve True
+    (devolve False caso contrário)'''
     if eh_campo(m1) and eh_campo(m2):
         if len(m1) == len(m2):
             for i in m1:
@@ -355,6 +403,9 @@ def campos_iguais(m1,m2):
     return False
 
 def campo_para_str(m):
+    '''campo_para_str: campo -> str
+    Esta função recebe um campo m e devolve uma cadeia de caracteres que representa o mesmo
+    (da acordo com os exemplos da ficha do enunciado)'''
     string1 = '   '
     string2 = '  +'
     string3 = ''
@@ -386,6 +437,11 @@ def campo_para_str(m):
     return string1 + string2 + string3 + string2[:-1]
 
 def coloca_minas(m, c, g, n):
+    '''coloca_minas: campo x coordenada x gerador x int -> campo
+    Esta função recebe um campo m, uma coordenada c, um gerador g e um inteiro n, modifica 
+    destrutivamente m, colocando minas em n coordenadas aleatórias (não coincidentes com c
+    nem com as suas coordenadas vizinhas) sem sobreposição das mesmas, e devolve o campo 
+    alterado'''
     coord_proib = [coordenada_para_str(c)] 
     for i in obtem_coordenadas_vizinhas(c):
         if eh_coordenada_do_campo(m, i):
@@ -400,6 +456,10 @@ def coloca_minas(m, c, g, n):
     return m
 
 def limpa_campo(m, c):
+    '''limpa_campo: campo x coordenada -> campo
+    Esta função recebe um campo m e uma coordenada c, modifica destrutivamente m, limpando 
+    a parcela da coordenada c (limpa parcelas vizinhas, no casp de não terem minas na sua 
+    vizinhança)'''
     if eh_parcela_limpa(obtem_parcela(m,c)):
         return m
     else:
@@ -426,18 +486,32 @@ def limpa_campo(m, c):
 
 #2.2.1
 def jogo_ganho(m):
+    '''jogo_ganho: campo -> booleano
+    Esta função recebe um campo m e devolve True se todas as parcelas de m que não têm 
+    minas estiverem limpas'''
     if len(obtem_coordenadas(m, 'minadas')) == len(obtem_coordenadas(m, 'marcadas')) + len(obtem_coordenadas(m, 'tapadas')):
         return True
     return False
 
 #2.2.2
 def str_para_int_aux(n):
+    '''str_para_aux: universal -> booleano
+    Esta função verifica se não é possível tornar o argumento n em inteiro (devolvendo 
+    True se não for) - função auxiliar às funções turno_jogador e minas'''
     try:
         int(n)
     except ValueError:
         return True
 
 def turno_jogador(m):
+    '''turno_jogador: campo -> bool
+    Esta função recebe um campo m e permite ao jogador escolher uma ação (Limpar ou Marcar)
+    e uma coordenada para aplicar esta ação, se o jogaodor escolher limpar uma parcela
+    que contém uma mina, a função limpa a parcela e devolve False, caso contrário,
+    se o jogador limpar uma parcela não minada, o mesmo limpa a parcela (e vizinhas - de 
+    acordo com a função limpa_campo), devolvendo True, e se o jogador marcar uma parcela,
+    a função alterna a bandeira da parcela (de acordo com a função alterna_bandeira), 
+    devolvendo True'''
     action = input('Escolha uma ação, [L]impar ou [M]arcar:')
     while not (action == 'L' or action == 'M'):
         action = input('Escolha uma ação, [L]impar ou [M]arcar:')
@@ -457,6 +531,17 @@ def turno_jogador(m):
 
 #2.2.3
 def minas(c, l, n, d, s):
+    '''minas: str x int x int x int x int -> booleano
+    Esta função permite jogar o jogo das minas. A mesma recebe a ultima coluna c e a
+    ultima linha l de um campo, um numero de parcelas minadas n, uma dimensao d e uma
+    seed s se um gerador, e devolve True se o jogador conseguir ganhar o jogo (False
+    caso contrário). Começando por verificar a validade dos argumentos, a função pede 
+    ao jogador uma coordenada para começar o jogo e, a partir daí, planta n minas no
+    campo (de acordo coma função coloca_minas) depois, enquanto o jogo não está ganho
+    (de acordo com a função jogo_ganho), pede ao jogador ações e coordenadas (de acordo
+    coma função turno_jogaodor). No caso de ganhar, o jogador recebe a mensagem "VITORIA!!!",
+    no caso de perder (a função turno_jogador devolver Falso), o jogador recebe a mensagem
+    "BOOOOOOOM!!!"'''
     try:
         cria_gerador(d, s)
         cria_campo(c, l)
@@ -492,4 +577,4 @@ def minas(c, l, n, d, s):
     print('VITORIA!!!')
     return True
 
-minas('N', 6, 6, 32, 100)
+#minas('N', 6, 6, 32, 100)
