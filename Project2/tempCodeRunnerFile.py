@@ -1,0 +1,1 @@
+tuple(coordenada_para_str(p) for p in t
